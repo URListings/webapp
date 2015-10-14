@@ -11,7 +11,9 @@ One of the most popular ways to do this is through craigslist. Another method is
 **Disadvantages of the above methods:**
 
 1.Craigslist is huge. Postings get burried. The sale can be at a place where distance from campus is big. This may not be good for someone who is new to the place.
+
 2.The fliers on campus noticeboards contain almost every type of information(events, ads etc.). This information can be easily lost in there. Also using flyers wastes paper and has printing cost.
+
 3.The mailing list requires a person to re-post the ad after two weeks. Also the ad maybe there even after the purpose of it may have been solved.
 
 **Purpose**
@@ -20,8 +22,11 @@ The purpose of this webapp is to allow the students to search for items on sale 
 **Proposed features**
 
 1.To login using the UofR email id. The account will be confirmed after the validation from email.
+
 2.The feature to post a sale item along with a category(furniture, household appliance, vehicle).
+
 3.The feature to post roommate search listing.
+
 4.To post an expiry date on the ad after which the listing won't be visible to other users.
 
 **License**
