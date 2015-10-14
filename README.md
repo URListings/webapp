@@ -19,6 +19,7 @@ One of the most popular ways to do this is through craigslist. Another method is
 The purpose of this webapp is to allow the students to search for items on sale by other students in the same unviersity campus. Another feature we're trying to implement is to search for probable roommates for off-campus or graduate housing.
 
 **Proposed features**
+
 1. To login using the UofR email id. The account will be confirmed after the validation from email.
 
 2. The feature to post a sale item along with a category(furniture, household appliance, vehicle).
