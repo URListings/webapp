@@ -1,5 +1,9 @@
 **URListings**
 
+**Team members**
+1. Kanishk Tripathi
+
+2. Jingwei Xu
 
 **Problem statement**
 
