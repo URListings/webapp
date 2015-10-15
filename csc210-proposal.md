@@ -2,9 +2,9 @@
 
 **Team members:**
 
-1. Kanishk Tripathi
+1. Kanishk Tripathi (ktripath@ur.rochester.edu)
 
-2. Jingwei Xu
+2. Jingwei Xu (jxu45@UR.Rochester.edu)
 
 **Problem statement**
 
