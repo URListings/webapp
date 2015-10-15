@@ -1,6 +1,7 @@
 **URListings**
 
-**Team members**
+**Team members:**
+
 1. Kanishk Tripathi
 
 2. Jingwei Xu
