@@ -6,11 +6,11 @@
 2. Graduate students or undergraduates who live in off campus housing often require roommates to share the rental and other costs.
 
 **Current methods**
-One of the most popular ways to do this is through craigslist. Another method is through fliers on noticeboards. The Chinese students also have a mailing list for these purposes.
+One of the most popular ways to do this is through craigslist. Another method is through fliers on noticeboards. The Chinese students also have a mailing list for these purposes. There're also facebook groups where people post such requirements.
 
 **Disadvantages of the above methods:**
 
-1.Craigslist is huge. Postings get burried. The sale can be at a place where distance from campus is big. This may not be good for someone who is new to the place.
+1.Craigslist is huge. Postings get burried. The sale can be at a place where distance from campus is big. This may not be good for someone who is new to the place. Many people may not be aware of facebook groups and posts can get lost among others.
 
 2.The fliers on campus noticeboards contain almost every type of information(events, ads etc.). This information can be easily lost in there. Also using flyers wastes paper and has printing cost.
 
@@ -25,9 +25,9 @@ The purpose of this webapp is to allow the students to search for items on sale 
 
 2.The feature to post a sale item along with a category(furniture, household appliance, vehicle).
 
-3.The feature to post roommate search listing.
+3.The feature to post roommate search listing. As a stretch goal, we can integrate with Google maps for location. The user can get address by pin-pointing or by typing the address and then getting the location.
 
-4.To post an expiry date on the ad after which the listing won't be visible to other users.
+4.To post an expiry date on the ad after which the listing won't be visible to other users. This feature won't make the user re-post the listing. The user can simply change the expiry date. Also the user can delete the listing.
 
 **License**
 WTFPL
