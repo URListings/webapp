@@ -37,5 +37,5 @@ The purpose of this webapp is to allow the students to search for items on sale 
 
 The listings and their responses will be stored in a data store. So far MySQL will be the choice but we can also experiment with NoSQL like MongoDB.
 
-In both feature 2 and 3, the user will also have the option to upload the images. We'll try to work with aesthetics and single page application concept.
+In both feature 2 and 3, the user will also have the option to upload the images. We'll try to work with aesthetics and single page application concept
 
