@@ -59,33 +59,40 @@
                 <div class="col-lg-12">
                     <div class="login">
                         <h3>LogIn or SignUp</h3>
-			 <div class="form-group">
-			        <input type="email" class="form-control" id="loginEmail" placeholder="Email">
-			  </div>
-			  <div class="form-group">
-				<input type="password" class="form-control" id="loginPass" placeholder="Password">
-			  </div>
-                        <ul class="list-inline intro-social-buttons">
-                            <li>
-                                <a href="#" class="btn btn-default btn-lg"><span class="network-name">Login</span></a>
-                            </li>
-                            <li>
-                                <a href="#" class="btn btn-default btn-lg"><span class="network-name">SignUp</span></a>
-                            </li>
-                        </ul>
+						<div class="form-group">
+								<label id = "valid_message" class="btn btn-danger hide_field"></label>
+						</div>
+						<form class="form-horizontal">
+							<div class="form-group">
+								<input type="email" class="form-control" id="loginEmail" placeholder="Email*">
+							</div>
+							<div class="form-group">
+								<input type="password" class="form-control" id="loginPass" placeholder="Password*">
+							</div>
+							<div class="hide_field" id="profile_group">
+								<div class="form-group">
+									<input type="password" class="form-control" id="loginPassC" placeholder="Confirm Password*">
+								</div>
+								<div class="form-group">
+									<input type="text" class="form-control" id="firstName" placeholder="First Name*">
+								</div>
+								<div class="form-group">
+									<input type="text" class="form-control" id="lastName" placeholder="Last Name*">
+								</div>			  
+							</div>
+							<div class="form-group">
+								<input id="show" type ="hidden" value="0"/>
+								<input type="button" class="btn btn-info" value="LogIn" id="login"/>
+								<input type="button" class="btn btn-info" value="SignUp" id="signup"/>
+							</div>
+						</form>
                     </div>
                 </div>
             </div>
 
         </div>
-        <!-- /.container -->
 
     </div>
-    <!-- /.intro-header -->
-
-    <!-- Page Content -->
-
-    <!-- Footer -->
     <footer>
         <div class="container">
             <div class="row">
@@ -108,6 +115,9 @@
             </div>
         </div>
     </footer>
-</body>
 
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+	<script src="js/landing.js"></script>
+</body>
 </html>
