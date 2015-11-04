@@ -2,6 +2,7 @@ var express = require('express'); // required to support parsing of POST request
 var app = express();
 var bodyParser = require('body-parser');
 var login = require('./login');
+var smtpTransport = login.getSMTPTransport(require('nodemailer'));
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.use(express.static('static'));
@@ -10,8 +11,12 @@ app.use(express.static('static'));
 // To test with curl, run:
 app.post('/users', function (req, res) {
   var postBody = req.body;
-  login.create(postBody, function(data) {
+  login.create(postBody, function(data, userData) {
 	  res.json(data);
+	  if(data.valid) {
+		  var host = req.protocol + '://' + req.get('host');
+		  login.sendConfirmationMail(userData, smtpTransport, host);
+	  }
   });
 });
 
@@ -30,6 +35,21 @@ app.get('/welcome',function(req,res){
   res.sendFile(__dirname + '/view/home.html');
 });
 
+app.get('/error',function(req,res){
+  res.sendFile(__dirname + '/view/error.html');
+});
+
+app.get('/confirm/',function(req, res){
+  var token = req.query.token;
+  var email = req.query.email;
+  login.confirmToken(email, token, function(response) {
+	 if(response.success) {
+		 res.redirect('/');
+	 } else {
+		 res.redirect('/error');
+	 }
+  });
+});
 
 // start the server on http://localhost:3000/
 var server = app.listen(3000, function () {

@@ -7,6 +7,7 @@
     "mongodb": "2.0.47",
     "body-parser": "1.14.1",
     "mysql":"2.9.0",
-    "mongoose":"4.2.4"
+    "mongoose":"4.2.4",
+	"nodemailer":"1.8.0"
   }
 }
