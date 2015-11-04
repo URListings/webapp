@@ -6,7 +6,7 @@ $(document).ready(function() {
 			$("#profile_group").fadeIn();
 			$("#show").val('1');
 		} else {
-			var reqJson = {_id:$('#loginEmail').val(), pass:$('#loginPass').val(),
+			var reqJson = {_id:$('#loginEmail').val().toLowerCase(), pass:$('#loginPass').val(),
 							passC:$('#loginPassC').val(),fName:$('#firstName').val(), lName:$('#lastName').val()};
 			if(mandatoryCheck(reqJson) && validateSignUp(reqJson)) {
 				$.ajax({
@@ -25,7 +25,7 @@ $(document).ready(function() {
 	});
 	$("#login").click(function() {
 		$('#valid_message').hide();
-		var reqJson = {_id:$('#loginEmail').val(), pass:$('#loginPass').val()};
+		var reqJson = {_id:$('#loginEmail').val().toLowerCase(), pass:$('#loginPass').val()};
 		if(mandatoryCheck(reqJson)) {
 			$.ajax({
 				type:'POST',
