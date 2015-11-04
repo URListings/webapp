@@ -10,24 +10,24 @@ app.use(express.static('static'));
 // To test with curl, run:
 app.post('/users', function (req, res) {
   var postBody = req.body;
-  console.log(postBody);
-  if(postBody.email != 'test@test.com') {
-	  res.status(422).send('Fail');
-  } else {
-	  res.send('Success');  
-  }
+  login.create(postBody, function(data) {
+	  res.json(data);
+  });
 });
 
-// READ profile data for a user
+// Autheticate a user
 app.post('/profile/', function (req, res) {
-  var nameToLookup = req.params[0]; // this matches the '*' part of '/users/*' above
   var postBody = req.body;
-  login.authenticate(postBody);
-  if(postBody.email != 'test@test.com') {
-	  res.status(422).send('Epic Fail');
-  } else {
-	  res.send('Oyeeee');
-  }
+  login.authenticate(postBody, function(data) {
+	if(data.valid) {
+		data.message = '/welcome';
+	}  
+	res.json(data);
+  });
+});
+
+app.get('/welcome',function(req,res){
+  res.sendFile(__dirname + '/view/home.html');
 });
 
 

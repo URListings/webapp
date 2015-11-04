@@ -1,46 +1,45 @@
 $(document).ready(function() {
 	$("#signup").click(function() {
 		var is_hidden = ($("#show").val() === '0');
+		$('#valid_message').hide();
 		if(is_hidden) {
-			$('#valid_message').hide()
 			$("#profile_group").fadeIn();
 			$("#show").val('1');
 		} else {
-			var reqJson = {email:$('#loginEmail').val(), pass:$('#loginPass').val(),
+			var reqJson = {_id:$('#loginEmail').val(), pass:$('#loginPass').val(),
 							passC:$('#loginPassC').val(),fName:$('#firstName').val(), lName:$('#lastName').val()};
 			if(mandatoryCheck(reqJson) && validateSignUp(reqJson)) {
 				$.ajax({
 					type:'POST',
 					url:'/users/',
-					dataType:'text/html',
+					dataType:'json',
 					data: reqJson,
 					beforeSend: function() {
 					},
 					success: function(data ) {
-						alert(data);
-					},
-					error: function(jq,status,message) {
-						$('#valid_message').fadeIn().text(jq.responseText);
+						$('#valid_message').fadeIn().text(data.message);
 					}
 				});
 			}
 		}
 	});
 	$("#login").click(function() {
-		var reqJson = {email:$('#loginEmail').val(), pass:$('#loginPass').val()};
+		$('#valid_message').hide();
+		var reqJson = {_id:$('#loginEmail').val(), pass:$('#loginPass').val()};
 		if(mandatoryCheck(reqJson)) {
 			$.ajax({
 				type:'POST',
 				url:'/profile/',
 				data: reqJson,
-				dataType:'text/html',
+				dataType:'json',
 				beforeSend: function() {
 				},
 				success: function(data ) {
-						alert(data);
-				},
-				error: function(jq,status,message) {
-					$('#valid_message').fadeIn().text(jq.responseText);
+					if(data.valid) {
+						window.location = data.message
+					} else {
+						$('#valid_message').fadeIn().text(data.message);
+					}
 				}
 			});
 		}
