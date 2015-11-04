@@ -42,7 +42,7 @@ module.exports = {
 								response.valid = false;
 								response.message = 'Error in creating user. Please try later';
 							} else {
-								response.message = 'User account created successfully';
+								response.message = 'User account created successfully. Check the email to confirm registration';
 							}
 							db.close();
 							callback(response, userData);
@@ -87,7 +87,7 @@ module.exports = {
 		}
 	},
 	sendConfirmationMail : function(userData, smtpTransport, host) {
-		var body = 'Please go to this link to confirm email:\n' + host + '/confirm?token=' + userData.token+'&email='+userData._id;
+		var body = 'Please go to this link to confirm registration:\n' + host + '/confirm?token=' + userData.token+'&email='+userData._id;
 		var mailOptions = this.generateMailOption(userData._id, 'URListing:Confirm account', body);
 		this.sendMail(smtpTransport, mailOptions);
 	},
