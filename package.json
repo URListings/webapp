@@ -1,13 +1,30 @@
 {
-  "name": "project_dependencies",
-  "description": "A package for project dependencies",
-  "author": "Kanishk Tripathi <github.com/kanishktripathi",
+  "name": "urlistings",
+  "version": "1.0.0",
+  "description": "UrListings webapp package dependencies",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/URListings/webapp.git"
+  },
+  "keywords": [
+    "URlistings",
+    "webapp"
+  ],
+  "author": "Kanishk",
+  "license": "WTFPL",
+  "bugs": {
+    "url": "https://github.com/URListings/webapp/issues"
+  },
+  "homepage": "https://github.com/URListings/webapp#readme",
   "dependencies": {
-    "express": "4.13.3",
-    "mongodb": "2.0.47",
-    "body-parser": "1.14.1",
-    "mysql":"2.9.0",
-    "mongoose":"4.2.4",
-	"nodemailer":"1.8.0"
+    "body-parser": "^1.14.1",
+    "express": "^4.13.3",
+    "mongodb": "^2.0.47",
+    "nodemailer": "^1.8.0"
   }
 }
