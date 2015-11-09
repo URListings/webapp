@@ -2,6 +2,7 @@ var express = require('express'); // required to support parsing of POST request
 var app = express();
 var bodyParser = require('body-parser');
 var login = require('./login');
+var user = require('./user');
 var smtpTransport = login.getSMTPTransport(require('nodemailer'));
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); 
@@ -50,6 +51,20 @@ app.get('/confirm/',function(req, res){
 	 }
   });
 });
+
+app.get('/account/',function(req, res){
+    res.sendFile(__dirname + '/view/account.html');    
+})
+
+app.post('/account/',function(req, res){
+    var postBody = req.body;
+    user.query(postBody, function(data){
+        if(data.valid){
+            
+        }
+        res.json(data);
+    });
+})
 
 // start the server on http://localhost:3000/
 var server = app.listen(3000, function () {
