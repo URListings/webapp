@@ -1,5 +1,7 @@
 $(document).ready(function() {
-	$("#signup").click(function() {
+    checkCookie();
+
+    $("#signup").click(function() {
 		var is_hidden = ($("#show").val() === '0');
 		$('#valid_message').hide();
 		if(is_hidden) {
@@ -36,6 +38,7 @@ $(document).ready(function() {
 				},
 				success: function(data ) {
 					if(data.valid) {
+                        createCookie(reqJson._id, reqJson.pass);
 						window.location = data.message
 					} else {
 						$('#valid_message').fadeIn().text(data.message);
@@ -44,7 +47,33 @@ $(document).ready(function() {
 			});
 		}
 	});
-	
+
+
+    function checkCookie(){
+        console.log('check cookie');
+
+        var id = Cookies.get('loginId');
+        var password = Cookies.get('password');
+        if(id !== null && id !== undefined && id !== '' && password !== null && password !== undefined && password !== ''){
+            console.log('check pass');
+            var reqJson = {_id:id, pass:password};
+			$.ajax({
+				type:'POST',
+				url:'/profile/',
+				data: reqJson,
+				dataType:'json',
+				beforeSend: function() {
+				},
+				success: function(data ) {
+					if(data.valid) {
+						window.location = data.message
+					}
+                }
+			});
+        }
+    }
+
+
 	function validateSignUp(json) {
 		if(json.pass != json.passC) {
 			$('#valid_message').fadeIn().text('Passwords do not match');
@@ -62,4 +91,11 @@ $(document).ready(function() {
 		}
 		return true;
 	}
+
+    function createCookie(id, pass){
+        console.log('create cookie');
+        Cookies.set('loginId', id);
+        Cookies.set('password', pass);
+    }
+
 });
