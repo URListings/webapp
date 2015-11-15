@@ -6,11 +6,13 @@ module.exports = {
 			this.client.dbCall(function (result) {
 				var db = result.value;
 				var col = db.collection('user');
+                console.log(userData._id+userData.pass);
 				col.find({_id:userData._id, pass:userData.pass, authenticate:1}).count(function(err, count) {
 					if(count == 0) {
 						response.message = 'Invalid user id or password';
 						response.valid = false;
 					}
+                    
 					db.close();
 					callback(response);
 				});
@@ -19,6 +21,39 @@ module.exports = {
 			callback(response);
 		}
 	},
+
+    query : function(userData, callback){
+    	response = this.validate(userData);
+		if(response.valid) {
+			this.client.dbCall(function (result) {
+				var db = result.value;
+				var col = db.collection('user');
+                console.log(userData._id+userData.pass);
+				col.find({_id:userData._id, pass:userData.pass, authenticate:1}).toArray(function(err, info) {
+					if(err) {
+						response.message = 'please login';
+						response.valid = false;
+					} else if (info.length){
+                        response.valid = true;
+                        response.message = 'found';
+                        response._id = info[0]._id;
+                        response.name = info[0].fName + ' ' + info[0].lName;
+                        console.log(info[0]._id);
+                    } else {
+                        response.valid = false;
+                        response.message = 'not found';
+                    }
+                    
+					db.close();
+					callback(response);
+				});
+			});
+		} else {
+			callback(response);
+		}
+    
+    },
+
 	create : function (userData, callback) {
 		response = this.validate(userData);
 		if(response.valid) {

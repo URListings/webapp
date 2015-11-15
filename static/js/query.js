@@ -8,16 +8,17 @@ $(document).ready(function(){
             var reqJson = {_id:id, pass:password};
             $.ajax({
                 type:'POST',
-                url:'/account/',
+                url:'/query/',
                 data: reqJson,
                 dataType:'json',
                 beforeSend: function(){},
                 success: function(data){
                     if(data.valid){
                         console.log('account info found');
-                        $('#name').fadeIn().text(data.message);
+                        $('#name').fadeIn().text(data.name);
                     }
                     else{
+                        $('#name').fadeIn().text(data.message);
                         console.log('account info not found');
                     }
                 }
