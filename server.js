@@ -66,6 +66,13 @@ app.post('/query/', function(req, res){
     });
 })
 
+app.post('/Edit', function(req, res){
+    var postBody = req.body;
+    login.edit(postBody, function(data){
+        res.json(data);
+    });
+});
+
 // start the server on http://localhost:3000/
 var server = app.listen(3000, function () {
   var port = server.address().port;

@@ -22,6 +22,25 @@ module.exports = {
 		}
 	},
 
+    edit : function(userData, callback){
+        response = {valid:false};
+        this.client.dbCall(function(result){
+            var db = result.value;
+            var col = db.collection('user');
+            col.updateOne({_id:userData._id, pass:userData.pass, authenticate:1}, { $set:{fName:userData.fName, lName:userData.lName}}, function(err, info){
+                if(err){
+                    response.valid = false;
+                } else {
+                    response.valid = true;
+                    response.name = userData.fName + ' ' + userData.lName;
+                }
+                db.close();
+                callback(response);
+            });
+        });
+    },
+
+
     query : function(userData, callback){
     	response = this.validate(userData);
 		if(response.valid) {
@@ -89,6 +108,9 @@ module.exports = {
 			callback(response);
 		}	
 	},
+
+
+
 	confirmToken : function(email, userToken, callback) {
 		this.client.dbCall(function (result) {
 			var db = result.value;

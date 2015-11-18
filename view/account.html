@@ -71,17 +71,23 @@
     </div>
 
     <!-- Body -->
+    <p id="message"></p>
+    <br>
     <div class="User-Info" id="info">
-        <p class="user" id="name"> </p>
-        <p class="user" id="id"></p>
+        Name: <p class="user" id="name"> </p>
+        Login id: <p class="user" id="id"></p>
         <input type="button" class="user" id="edit" value="Edit">
     </div>
 
     <div class="hide_field" id="edit_form">
         <form class="form_group">
             <div>
-                New name: <input type="text" class="form_control" id="edit_name" placeholder="Name">
+                First name: <input type="text" class="form_control" id="edit_fname" placeholder="First Name">
             </div>
+            <div>
+                Last name: <input type="text" class="form_control" id="edit_lname" placeholder="First Name">
+            </div>
+            <br>
             <div>
                 New id: <input type="text" class="form_control" id="edit_id" placeholder="Login id">
             </div>
@@ -90,6 +96,7 @@
             </div>
         </form>
     </div>
+
 
 
     <footer>
