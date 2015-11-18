@@ -43,6 +43,9 @@
                     <a href="#/account" class="account" id="account">Account</a>
                     </li>
                     <li>
+                        <a href="/" id="logout">Sign out</a>
+                    </li>
+                    <li>
                         <a href="#about">About</a>
                     </li>
                     <li>
@@ -68,10 +71,26 @@
     </div>
 
     <!-- Body -->
-    <div class="User-Info">
-        <p class="user" id="name">User Name</p>
-
+    <div class="User-Info" id="info">
+        <p class="user" id="name"> </p>
+        <p class="user" id="id"></p>
+        <input type="button" class="user" id="edit" value="Edit">
     </div>
+
+    <div class="hide_field" id="edit_form">
+        <form class="form_group">
+            <div>
+                New name: <input type="text" class="form_control" id="edit_name" placeholder="Name">
+            </div>
+            <div>
+                New id: <input type="text" class="form_control" id="edit_id" placeholder="Login id">
+            </div>
+            <div>
+            <input type="button" class="form_control" id="save" value="Save">
+            </div>
+        </form>
+    </div>
+
 
     <footer>
         <div class="container">
@@ -99,6 +118,6 @@
     <script src="js/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/js-cookie/src/js.cookie.js"></script>
-    <script src="js/query.js"></script>
+    <script src="js/account.js"></script>
 </body>
 </html>

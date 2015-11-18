@@ -43,6 +43,12 @@ $(document).ready(function(){
                 window.location = '/account';
             }
     });
-  
+
+    $("#logout").click(function(){
+        Cookies.remove('loginId');
+        Cookies.remove('password');
+        
+    });
+
 })
 
