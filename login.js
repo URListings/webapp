@@ -6,7 +6,6 @@ module.exports = {
 			this.client.dbCall(function (result) {
 				var db = result.value;
 				var col = db.collection('user');
-                console.log(userData._id+userData.pass);
 				col.find({_id:userData._id, pass:userData.pass, authenticate:1}).count(function(err, count) {
 					if(count == 0) {
 						response.message = 'Invalid user id or password';
@@ -47,7 +46,6 @@ module.exports = {
 			this.client.dbCall(function (result) {
 				var db = result.value;
 				var col = db.collection('user');
-                console.log(userData._id+userData.pass);
 				col.find({_id:userData._id, pass:userData.pass, authenticate:1}).toArray(function(err, info) {
 					if(err) {
 						response.message = 'please login';
@@ -57,7 +55,6 @@ module.exports = {
                         response.message = 'found';
                         response._id = info[0]._id;
                         response.name = info[0].fName + ' ' + info[0].lName;
-                        console.log(info[0]._id);
                     } else {
                         response.valid = false;
                         response.message = 'not found';

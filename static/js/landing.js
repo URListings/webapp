@@ -50,12 +50,9 @@ $(document).ready(function() {
 
 
     function checkCookie(){
-        console.log('check cookie');
-
         var id = Cookies.get('loginId');
         var password = Cookies.get('password');
         if(id !== null && id !== undefined && id !== '' && password !== null && password !== undefined && password !== ''){
-            console.log('check pass');
             var reqJson = {_id:id, pass:password};
 			$.ajax({
 				type:'POST',
@@ -94,8 +91,8 @@ $(document).ready(function() {
 
     function createCookie(id, pass){
         console.log('create cookie');
-        Cookies.set('loginId', id);
-        Cookies.set('password', pass);
+        Cookies.set('loginId', id, {expires: 365});
+        Cookies.set('password', pass, {expires: 365});
     }
 
 });

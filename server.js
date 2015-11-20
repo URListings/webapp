@@ -57,7 +57,6 @@ app.get('/account/',function(req, res){
 
 app.post('/query/', function(req, res){
     var postBody = req.body;
-    console.log('server, query');
     login.query(postBody, function(data){
         if(data.valid){
             
@@ -66,7 +65,7 @@ app.post('/query/', function(req, res){
     });
 })
 
-app.post('/Edit', function(req, res){
+app.post('/Edit/', function(req, res){
     var postBody = req.body;
     login.edit(postBody, function(data){
         res.json(data);

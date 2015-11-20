@@ -41,11 +41,19 @@ $(document).ready(function(){
     $("#edit").click(function(){
         $(".User-Info").hide();
         $(".hide_field").fadeIn();
+        $('#title').text('Changing Account Settings');
         //var tmp_name = $('#name').text();
         //var tmp_id = $('#id').text();
         //$('#edit_name').val(tmp_name);
         //$('#edit_id').val(tmp_id);
 
+    });
+
+    $('#cancel').click(function(){
+        $(".hide_field").hide();
+        $(".User-Info").fadeIn();
+        $('#title').text('Account Information');
+        $('.new_info').val('');
     });
 
     $("#save").click(function(){
@@ -78,7 +86,7 @@ $(document).ready(function(){
             
         });
         $(".User-Info").fadeIn();
-
+        $('#title').text('Account Information');
     });
 
     
