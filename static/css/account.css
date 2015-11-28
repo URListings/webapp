@@ -1,0 +1,31 @@
+table {
+	table-layout: fixed;
+	margin: auto;
+}
+
+th {
+	text-align: center;
+	font: bold 30px arial, sans-serif;
+	color: silver;
+	padding: 20px;
+}
+
+td {
+	padding: 10px;
+}
+
+.key {
+	text-align: right;
+	font: 15px arial, sans-serif;
+	color: grey;
+}
+
+.value {
+	text-align: center;
+	font: 15px arial, sans-serif;
+}
+
+.listName, .listId, .listTime {
+	display: inline-block;
+	padding: 10px;
+}
