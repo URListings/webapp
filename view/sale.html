@@ -16,11 +16,12 @@
 
     <!-- Custom CSS -->
     <link href="css/landing-page.css" rel="stylesheet">
+
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
+    <link href="css/sale.css" rel="stylesheet">
 </head>
 
 <body>
@@ -71,15 +72,40 @@
     </div>
 
     <!-- Body -->
-    <div class='welcome' style='text-align:center'>
-        <h1 id='title'>Welcome to URListing</h1>
+    <div class='Content' style='text-align:center'>
+
+       <div class='sale-info'>
+            <input id="postB" type='button' value='Post'>
+        </div>
+        <div class='post-form'>
+            <input id="back" type='button' value="Back To List">
+        </div>
+    
+   
+
+        <div class='post-form'>
+            <p>Post form</p>
+            <form class='form-group'>
+                <div>
+                    <p>Title:</p>
+                    <input type='text' class='post-info' id='post_title' placeholder='title'>
+                </div>
+                <div>
+                    <p>Content:</p>
+                    <textarea rows="5" cols="50" class='post-info' id='post_text'>
+                    </textarea>
+                </div>
+                <div>
+                    <input type='button' class='post-info' id='submit' value='Submit'>
+                </div>
+            </form>
+        </div>
+
+        <div class='sale-info'>
+            <p>sales info</p>
+        </div>
 
     </div>
-
-    <div class='dirction'>
-        <input id='sale' type='button' value='Sale Information'>
-    </div>
-
 
     <footer>
         <div class="container">
@@ -107,6 +133,6 @@
     <script src="js/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/js-cookie/src/js.cookie.js"></script>
-    <script src="js/welcome.js"></script>
+    <script src="js/sale.js"></script>
 </body>
 </html>

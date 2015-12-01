@@ -39,6 +39,7 @@ app.get('/error',function(req,res){
   res.sendFile(__dirname + '/view/error.html');
 });
 
+
 app.get('/confirm/',function(req, res){
   var token = req.query.token;
   var email = req.query.email;
@@ -53,6 +54,10 @@ app.get('/confirm/',function(req, res){
 
 app.get('/account/',function(req, res){
     res.sendFile(__dirname + '/view/account.html');    
+})
+
+app.get('/sale/', function(req, res){
+  res.sendFile(__dirname + '/view/sale.html');
 })
 
 app.post('/query/', function(req, res){

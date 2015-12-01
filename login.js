@@ -31,7 +31,8 @@ module.exports = {
                     response.valid = false;
                 } else {
                     response.valid = true;
-                    response.name = userData.fName + ' ' + userData.lName;
+                    response.fName = userData.fName;
+                    response.lName = userData.lName;
                 }
                 db.close();
                 callback(response);
@@ -54,7 +55,8 @@ module.exports = {
                         response.valid = true;
                         response.message = 'found';
                         response._id = info[0]._id;
-                        response.name = info[0].fName + ' ' + info[0].lName;
+                        response.fName = info[0].fName;
+                        response.lName = info[0].lName;
                     } else {
                         response.valid = false;
                         response.message = 'not found';

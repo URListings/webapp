@@ -1,4 +1,5 @@
 $(document).ready(function(){
+
     checkCookie();    
  
  
@@ -44,8 +45,14 @@ $(document).ready(function(){
             }
     });
 
-    $('#sale').click(function(){
-        window.location = '/sale';
+    $("#postB").click(function(){
+        $(".post-form").fadeIn();
+        $(".sale-info").hide();
+    })
+
+    $("#back").click(function(){
+        $(".sale-info").fadeIn();
+        $(".post-form").hide();
     })
 
     $("#logout").click(function(){

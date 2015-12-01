@@ -5,37 +5,59 @@ $(document).ready(function(){
     function checkCookie(){
         var id = Cookies.get('loginId');
         var password = Cookies.get('password');
-        if(id !== null && id !== undefined && id !== '' && password !== null && password !== undefined && password !== ''){
-            var reqJson = {_id:id, pass:password};
-            $.ajax({
-                type:'POST',
-                url:'/query/',
-                data: reqJson,
-                dataType:'json',
-                beforeSend: function(){},
-                success: function(data){
-                    if(data.valid){
-                        console.log('account info found');
-                        $('#name').fadeIn().text(data.name);
-                        $('#id').fadeIn().text(data._id);
-                        $('#edit').fadeIn().text('Edit');
+        if(checkValid(id) && checkValid(password)){
+            var fName = Cookies.get('fName');
+            var lName = Cookies.get('lName');
+            if(checkValid(fName) && checkValid(lName)){
+                console.log('Cookies of name exist');
+                $('#name').fadeIn().text(fName + ' ' + lName);
+                $('#id').fadeIn().text(id);
+
+            }
+            else{
+                var reqJson = {_id:id, pass:password};
+                $.ajax({
+                    type:'POST',
+                    url:'/query/',
+                    data: reqJson,
+                    dataType:'json',
+                    beforeSend: function(){},
+                    success: function(data){
+                        if(data.valid){
+                            console.log('account info found');
+                            $('#name').fadeIn().text(data.fName + ' ' + data.lName);
+                            $('#id').fadeIn().text(data._id);
+                            $('#edit').fadeIn();
+                            Cookies.set('fName', data.fName, {expires: 365});
+                            Cookies.set('lName', data.lName, {expires: 365});
+                        }
+                        else{
+                            $('#name').fadeIn().text(data.message);
+                            console.log('account info not found');
+                        }
                     }
-                    else{
-                        $('#name').fadeIn().text(data.message);
-                        console.log('account info not found');
-                    }
-                }
-            });
+                });
+            }
         }
         else{
             window.location = '/';    
         }
     }
 
+    function checkValid(arg){
+        if(arg !== null && arg !== undefined && arg !== ''){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
     $("#logout").click(function(){
         Cookies.remove('loginId');
         Cookies.remove('password');
-        
+        Cookies.remove('fName');
+        Cookies.remove('lName');
     });
 
     $("#edit").click(function(){
@@ -77,7 +99,9 @@ $(document).ready(function(){
             success: function(data){
                 if(data.valid){
                     $('#message').fadeIn().text('Profile saved');
-                    $('#name').text(data.name);
+                    $('#name').text(data.fName + ' ' + data.lName);
+                    Cookies.set('fName', data.fName, {expires: 365});
+                    Cookies.set('lName', data.lName, {expires: 365});
                 }
                 else{
                     $('#message').fadeIn().text('Saving failed');

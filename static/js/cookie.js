@@ -1,4 +1,5 @@
 $(document).ready(function(){
+
     checkCookie();    
  
  
@@ -44,14 +45,11 @@ $(document).ready(function(){
             }
     });
 
-    $('#sale').click(function(){
-        window.location = '/sale';
-    })
-
     $("#logout").click(function(){
         Cookies.remove('loginId');
         Cookies.remove('password');
-        
+        Cookies.remove('fName');
+        Cookies.remove('lName');
     });
 
 })
