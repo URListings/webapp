@@ -45,20 +45,11 @@ $(document).ready(function(){
 		});
 	}
 	initMap();
-	$("#toggle").click(function() {
-		if($("#new_entry").is(":visible")) {
-			$("#new_entry").fadeOut(500);
-			$("#toggle span").removeClass('glyphicon-minus').addClass('glyphicon-plus');
-		} else {
-			$("#new_entry").fadeIn(500);
-			$("#toggle span").removeClass('glyphicon-plus').addClass('glyphicon-minus');
-			var center = map.getCenter();
-			google.maps.event.trigger(map, "resize");
-			map.setCenter(center);
-		}
-	});
-	$("#cancel").click(function() {
-		$("#toggle").trigger("click");
+	$('#new_entry').on('shown.bs.modal', function (e) {
+		google.maps.event.trigger(map, "resize");
+		map.setCenter(map.getCenter());
+	}).on('hidden.bs.modal', function (e) {
+		$('#form_rental')[0].reset();
 	});
 	$("#submit").click(function() {
 		ser = $("#form_rental").serializeArray();

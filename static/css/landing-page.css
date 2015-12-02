@@ -9,6 +9,10 @@ body,h1,h2,h3,h4,h5,h6 {
     font-weight: 700;
 }
 
+.pac-container {
+    z-index: 1051 !important;
+}
+
 .topnav {
     font-size: 14px; 
 }
@@ -28,9 +32,12 @@ body,h1,h2,h3,h4,h5,h6 {
 }
 
 .split_container {
-	padding-top:10px;
-	width: 1000px;
-	display:none;
+	width: 800px;
+	padding: 20px;
+}
+
+.popform {
+	margin-left:15px;
 }
 
 .new_address{
@@ -39,8 +46,8 @@ body,h1,h2,h3,h4,h5,h6 {
 }
 
 .map {
-	margin-left: 430px;
-    width: 550px;
+	margin-left: 420px;
+    width: 350px;
 	height:400px;
 }
 

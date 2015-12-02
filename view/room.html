@@ -69,14 +69,16 @@
           </div>
     </div>
 	<div class="container">
-				<div>
-					<button id= "toggle" type="button" class="btn btn-success icon" id="login"/>
-						<span class="glyphicon glyphicon-plus"></span>
-					</button>
-				</div>
-					<div class="split_container" id="new_entry">
+					<div>
+						<button type="button" class="btn btn-success icon" data-toggle="modal" data-target="#new_entry"/>
+							<span class="glyphicon glyphicon-plus"></span>
+						</button>
+					</div>
+					<div class="modal fade" id="new_entry" role="dialog">
+						<div class="modal-dialog">
+						<div class="modal-content split_container">
 						<div class="new_address">
-						<form class="form-horizontal" id = "form_rental">
+						<form class="form-horizontal popform" id = "form_rental">
 							<div class="form-group">
 								<input type="address" class="form-control" id="address" name = "address" placeholder="Address">
 							</div>
@@ -92,13 +94,15 @@
 								<input type="checkbox" value="Pots/Pans" name="amenities"/><span>Pots/Pans</span>
 								<input type="checkbox" value="Furnished" name="amenities"/><span>Furnished</span>
 							</div>
-							<div class="form-group">
+							<div class="form-group ">
 								<input type="button" class="btn btn-info" value="Submit" id="submit"/>
-								<input type="button" class="btn btn-info" value="Cancel" id="cancel"/>
+								<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel"/>
 							</div>
 						</form>
 						</div>
 						<div class="map" id="map"></div>
+						</div>
+						</div>
 					</div>
 					<div class="row_data">
 						<span class="data-none">
