@@ -60,7 +60,16 @@ app.get('/sale/', function(req, res){
   res.sendFile(__dirname + '/view/sale.html');
 })
 
-app.post('/post_sale/', function(req, res){
+app.get('/getSale/', function(req, res){
+  login.getSale(res, function(data){
+    if(data.valid){
+
+    }
+    res.json(data);
+  })
+})
+
+app.post('/postSale/', function(req, res){
   var post_body = req.body;
   login.postSale(post_body, function(data){
     if(data.valid){

@@ -1,13 +1,32 @@
 $(document).ready(function(){
-
+    getSale();
     
+    function getSale(){
+        $.ajax({
+            type:'GET',
+            url:'/getSale/',
+            beforeSend: function(){},
+            success: function(data){
+                if(data.valid){
+                    var json = data.sale_info
+                    $.each(json, function(index, value){
+                        console.log(index + ': ' + value._title);
+                    });
+
+                    
+                }
+            }
+        });
+    }
 
     $("#postB").click(function(){
+        $('#valid_message').hide();
         $(".post-form").fadeIn();
         $(".sale-info").hide();
     })
 
     $("#back").click(function(){
+        $('#valid_message').hide();
         $(".sale-info").fadeIn();
         $(".post-form").hide();
     })
@@ -25,16 +44,15 @@ $(document).ready(function(){
         if(mandatoryCheck(reqJson)){
             $.ajax({
                 type:'POST',
-                url:'/post_sale/',
+                url:'/postSale/',
                 dataType:'json',
                 data:reqJson,
                 beforeSend: function(){},
                 success: function(data){
                     if(data.valid){
-                        console.log(data.message);
                         
                     }
-                    console.log(data.message);
+                    
                 }
             });
         
@@ -43,12 +61,13 @@ $(document).ready(function(){
             $(".sale-info").fadeIn();
             $(".post-form").hide();
         }
+
     })
 
     function mandatoryCheck(json) {
         for(s in json) {
             if(json[s] === null || json[s] === undefined || json[s].trim() === '') {
-                $('#valid_message').fadeIn().text('Please fill all mandatory fields');
+                $('#valid_message').fadeIn().text('Please fill in all mandatory fields');
                 return false;
             }
         }
