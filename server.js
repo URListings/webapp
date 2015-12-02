@@ -60,9 +60,19 @@ app.get('/sale/', function(req, res){
   res.sendFile(__dirname + '/view/sale.html');
 })
 
+app.post('/post_sale/', function(req, res){
+  var post_body = req.body;
+  login.postSale(post_body, function(data){
+    if(data.valid){
+
+    }
+    res.json(data);
+  });
+})
+
 app.post('/query/', function(req, res){
-    var postBody = req.body;
-    login.query(postBody, function(data){
+    var post_body = req.body;
+    login.query(post_body, function(data){
         if(data.valid){
             
         }
@@ -71,8 +81,8 @@ app.post('/query/', function(req, res){
 })
 
 app.post('/Edit/', function(req, res){
-    var postBody = req.body;
-    login.edit(postBody, function(data){
+    var post_body = req.body;
+    login.edit(post_body, function(data){
         res.json(data);
     });
 });

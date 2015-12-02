@@ -1,49 +1,6 @@
 $(document).ready(function(){
 
-    checkCookie();    
- 
- 
-    function checkCookie(){
-        console.log('check cookie');
-
-        var id = Cookies.get('loginId');
-        var password = Cookies.get('password');
-        if(id !== null && id !== undefined && id !== '' && password !== null && password !== undefined && password !== ''){
-            console.log('check pass');
-            var reqJson = {_id:id, pass:password};
-			$.ajax({
-				type:'POST',
-				url:'/profile/',
-				data: reqJson,
-				dataType:'json',
-				beforeSend: function() {
-				},
-				success: function(data ) {
-					if(data.valid) {
-						console.log('already login');
-					}
-                    else{
-                        console.log('cookie not correct');
-                        window.location = '/';
-                    }
-                }
-			});
-        }
-        else{
-            console.log('no cookie');
-            window.location = '/';
-        }
-    }
-
-    $("#account").click(function(){
-        var id = Cookies.get('loginId');
-        if(id == 'Guest'){
-            window.location = '/';
-        }
-        else{
-                window.location = '/account';
-            }
-    });
+    
 
     $("#postB").click(function(){
         $(".post-form").fadeIn();
@@ -55,11 +12,50 @@ $(document).ready(function(){
         $(".post-form").hide();
     })
 
-    $("#logout").click(function(){
-        Cookies.remove('loginId');
-        Cookies.remove('password');
+    $("#submit").click(function(){
+        $('#valid_message').hide();
+        var id = Cookies.get('loginId');
+        var password = Cookies.get('password');
+        var fName = Cookies.get('fName');
+        var lName = Cookies.get('lName');
+        var title = $('#post_title').val();
+        var content = $('#post_content').val();
+        var reqJson = {_id:id, pass:password, fName:fName, lName:lName, 
+                        _title:title, _content:content};
+        if(mandatoryCheck(reqJson)){
+            $.ajax({
+                type:'POST',
+                url:'/post_sale/',
+                dataType:'json',
+                data:reqJson,
+                beforeSend: function(){},
+                success: function(data){
+                    if(data.valid){
+                        console.log(data.message);
+                        
+                    }
+                    console.log(data.message);
+                }
+            });
         
-    });
+
+
+            $(".sale-info").fadeIn();
+            $(".post-form").hide();
+        }
+    })
+
+    function mandatoryCheck(json) {
+        for(s in json) {
+            if(json[s] === null || json[s] === undefined || json[s].trim() === '') {
+                $('#valid_message').fadeIn().text('Please fill all mandatory fields');
+                return false;
+            }
+        }
+        return true;
+    }
+
+
 
 })
 

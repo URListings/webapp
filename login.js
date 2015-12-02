@@ -21,6 +21,7 @@ module.exports = {
 		}
 	},
 
+
     edit : function(userData, callback){
         response = {valid:false};
         this.client.dbCall(function(result){
@@ -71,6 +72,47 @@ module.exports = {
 		}
     
     },
+
+
+	postSale : function(userData, callback){
+		console.log('postSale');
+		var response = {valid:false};
+		this.client.dbCall(function (result) {
+			var db = result.value;
+			var userCol = db.collection('user');
+			var count = userCol.find({_id:userData._id, pass:userData.pass, authenticate:1}).count(function(err, count) {
+					if(count == 0) {
+						response.message = 'Invalid user id or password';
+						db.close();
+						callback(response);
+					}
+					else{
+						console.log('valid account');
+						var saleCol = db.collection('sale');
+						userData.create_date = new Date();
+						userData.modified_date = new Date();
+						userData.authenticate = 1;
+						userData.userID = userData._id;
+						delete userData._id;
+						delete userData.pass;
+						saleCol.insert(userData, function(err, data){
+							if(err){
+								console.log('insert err'+': '+err);
+								response.message = 'Post failed.';
+							}
+							else {
+								response.valid = true;
+								response.message = 'Post successed.';
+							}
+							db.close();
+							callback(response);
+						});
+						
+					}
+					
+				});
+		});
+	},
 
 	create : function (userData, callback) {
 		response = this.validate(userData);
