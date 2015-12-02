@@ -13,12 +13,35 @@ body,h1,h2,h3,h4,h5,h6 {
     font-size: 14px; 
 }
 
+.icon {
+    font-size: 14px;
+    border-radius: 24px;
+	margin-top:10px;
+}
+
 .intro-header {
     padding-top: 50px; /* If you're making other pages, make sure there is 50px of padding to make sure the navbar doesn't overlap content! */
     padding-bottom: 50px;
     color: #f8f8f8;
     background: url(../img/intro-bg.jpg) no-repeat center center;
     background-size: cover;
+}
+
+.split_container {
+	padding-top:10px;
+	width: 1000px;
+	display:none;
+}
+
+.new_address{
+	width: 400px;
+    float: left;
+}
+
+.map {
+	margin-left: 430px;
+    width: 550px;
+	height:400px;
 }
 
 .top-logo {
@@ -43,6 +66,16 @@ body,h1,h2,h3,h4,h5,h6 {
 	padding-bottom: 10%;
 	align-content: center;
 	margin: 0 28% 0 28%;
+}
+
+.row_data {
+	padding-top:10px;
+	min-height:300px;
+}
+
+.row_data  .data-none {
+	font-style:italic;
+	font-weight:300
 }
 
 .login > h1 {

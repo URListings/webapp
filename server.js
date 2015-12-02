@@ -54,11 +54,11 @@ app.get('/confirm/',function(req, res){
 
 app.get('/account/',function(req, res){
     res.sendFile(__dirname + '/view/account.html');    
-})
+});
 
 app.get('/sale/', function(req, res){
   res.sendFile(__dirname + '/view/sale.html');
-})
+});
 
 app.get('/getSale/', function(req, res){
   login.getSale(res, function(data){
@@ -67,7 +67,7 @@ app.get('/getSale/', function(req, res){
     }
     res.json(data);
   })
-})
+});
 
 app.post('/postSale/', function(req, res){
   var post_body = req.body;
@@ -77,7 +77,7 @@ app.post('/postSale/', function(req, res){
     }
     res.json(data);
   });
-})
+});
 
 app.post('/query/', function(req, res){
     var post_body = req.body;
@@ -87,7 +87,7 @@ app.post('/query/', function(req, res){
         }
         res.json(data);
     });
-})
+});
 
 app.post('/Edit/', function(req, res){
     var post_body = req.body;
