@@ -72,17 +72,29 @@
     </div>
 
     <!-- Body -->
-    <div class="info-group" style='text-align:center'>
-        <h1 id='title'>Account Information</h1>
-        <p id="message"></p>
-        <br>
-        
+    <div class="info-group" style='text-align:center'>        
+        <!--
         <div class="User-Info" id="info">
             Name: <p class="user" id="name"> </p>
             Login id: <p class="user" id="id"></p>
             <input type="button" class="user" id="edit" value="Edit">
         </div>
+        -->
 
+        <table class="User-Info" >
+            <tr><th colspan=3 id="title_">Account Information</th></tr>
+            <tr>
+                <td class="key" id="nameKey">Name:</td>
+                <td class="value" id="nameValue"></td>
+                <td><input type="button" class="edit" id="nameEdit" value="Edit"></td>
+            </tr>   
+            <tr>
+                <td class="key" id="loginIdKey">Login ID: </td>
+                <td class="value" id="loginIdValue"></td>
+                <td><input type="button" class="edit" id="loginIdEdit" value="Edit"></td>
+            </tr>    
+        </table>
+        
         <div class="hide_field" id="edit_form">
             <form class="form_group">
                 <div>
@@ -103,21 +115,11 @@
                 </div>
             </form>
         </div>
+        
+        <br>
+        <p id="message"></p>
     </div>
 
-    <table class="info-group">
-        <tr><th colspan=3 id="title_">Account Information</th></tr>
-        <tr>
-            <td class="key" id="nameKey">Name:</td>
-            <td class="value" id="nameValue">Pan R</td>
-            <td><input type="button" class="edit" id="nameEdit" value="Edit"></td>
-        </tr>   
-        <tr>
-            <td class="key" id="loginIdKey">Login ID: </td>
-            <td class="value" id="loginIdValue">jxu45@ur.rochester.edu</td>
-            <td><input type="button" class="edit" id="loginIdEdit" value="Edit"></td>
-        </tr>    
-    </table>
 
 
     <ul>
