@@ -79,6 +79,17 @@ app.post('/postSale/', function(req, res){
   });
 });
 
+
+
+
+app.get('/sale/post/:tagId', function(req, res) {
+  res.send("tagId is set to " + req.params.tagId);
+});
+
+
+
+
+
 app.post('/query/', function(req, res){
     var post_body = req.body;
     login.query(post_body, function(data){

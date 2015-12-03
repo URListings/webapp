@@ -11,8 +11,7 @@ $(document).ready(function(){
                     var json = data.sale_info
                     var table = $('#sale_table');
                     $.each(json, function(index, value){
-                        var row = [value._title, value.fName, value.create_date];
-                        $('#sale_table').append(createRow(row));
+                        $('#sale_table').append(createRow(value));
                     });
                 }
             }
@@ -22,12 +21,27 @@ $(document).ready(function(){
     function createRow(row){
         var tr = document.createElement('tr');
 
-        $.each(row, function(index, value){
-            var td = document.createElement('td');
-            var text = document.createTextNode(value);
-            td.appendChild(text);
-            tr.appendChild(td);
-        });
+        var td1 = document.createElement('td');
+        var a1 = document.createElement('a');
+        var text1 = document.createTextNode(row._title);
+        a1.appendChild(text1);
+        a1.href="/sale/post/" + row._id;
+        a1.id = row._id;
+        td1.appendChild(a1);
+        tr.appendChild(td1);
+
+        var td2 = document.createElement('td');
+        var a2 = document.createElement('a');
+        var text2 = document.createTextNode(row.fName+' '+row.lName);
+        a2.appendChild(text2);
+        td2.appendChild(a2);
+        tr.appendChild(td2);
+
+        var td3 = document.createElement('td');
+        var text3 = document.createTextNode(row.create_date);
+        td3.appendChild(text3);
+        tr.appendChild(td3);
+        
         return tr;
     }
 
