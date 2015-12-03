@@ -29,12 +29,10 @@ $(document).ready(function(){
 				anchor: new google.maps.Point(17, 34),
 				scaledSize: new google.maps.Size(25, 25)
 			};
-			markers.push(new google.maps.Marker({
-				map: map,
-				icon: icon,
-				title: place.name,
-				position: place.geometry.location
-			}));
+			marker = new google.maps.Marker({map: map, icon: icon, title: place.name, 
+						position: place.geometry.location});
+			$("#latlong").val(marker.position.lat() + ','+marker.position.lng());
+			markers.push(marker);
 			if (place.geometry.viewport) {
 				bounds.union(place.geometry.viewport);
 			} else {
@@ -44,11 +42,47 @@ $(document).ready(function(){
 			map.setZoom(16);
 		});
 	}
+	
+	function processJson(json, isNew) {
+		var outpuDiv;
+		var content = $("#row_template").html();
+		content = content.replace('$address', json.address);
+		content = content.replace('$rent', json.rent);
+		content = content.replace('$desc', json.description);
+		content = content.replace('$title', json.title);
+		content = content.replace('$rentin', getArrayString(json.rent_in));
+		content = content.replace('$address', getArrayString(json.amenities));
+		if(isNew) {
+			outpuDiv = $('<div id="'+ json.id +'_content">' + content + '</div>');
+			$("#item_set").prepend(outpuDiv);
+		} else {
+			outpuDiv = $('#' + json.id + '_content');
+			outpuDiv.html(content);
+		}
+		outpuDiv.find('button[data-target="#new_entry"]').data("data", json);
+	}
+	
+	function getArrayString(arr) {
+		var out = '';
+		if(arr) {
+			for(i = 0, len = arr.length; i < len; i++) {
+				if(i + 1 == len) {
+					out += arr[i];
+				} else {
+					out = out + arr[i] + ', ';
+				}
+			}
+		}
+		return out;
+	}
+	
 	initMap();
 	$('#new_entry').on('shown.bs.modal', function (e) {
 		google.maps.event.trigger(map, "resize");
 		map.setCenter(map.getCenter());
+		$('#send_message').hide();
 	}).on('hidden.bs.modal', function (e) {
+		$("#send_message").text('');
 		$('#form_rental')[0].reset();
 	});
 	$("#submit").click(function() {
@@ -65,17 +99,29 @@ $(document).ready(function(){
 				data[name] = ser[i].value;
 			}
 		}
+		url = data.prop_id === '' || data.prop_id === undefined ? '/addRoom' : '/editRoom';
 		$.ajax({
 			type:'POST',
-			url:'/addRoom/',
+			url:url,
 			dataType:'json',
-			data: reqJson,
+			data: data,
 			beforeSend: function() {
 			},
 			success: function(data ) {
-				$('#valid_message').fadeIn().text(data.message);
+				if(data.valid) {
+					$('#new_entry').modal('hide');
+				} else {
+					$("#send_message").text(data.message).show();
+				}
+				console.log(data);
 			}
 		});
+	});
+	$('a[aria-controls="myListings"]').on('shown.bs.tab', function (e) {
+		
+	});
+	$('button[data-target="#new_entry"]').on('show.bs.modal', function (e) {
+		console.log('dfsd');
 	});
 });
 

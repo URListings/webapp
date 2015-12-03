@@ -2,6 +2,7 @@ var express = require('express'); // required to support parsing of POST request
 var app = express();
 var bodyParser = require('body-parser');
 var login = require('./login');
+var room = require('./room_server');
 var smtpTransport = login.getSMTPTransport(require('nodemailer'));
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); 
@@ -39,6 +40,17 @@ app.get('/error',function(req,res){
   res.sendFile(__dirname + '/view/error.html');
 });
 
+app.get('/room',function(req,res){
+  res.sendFile(__dirname + '/view/room.html');
+});
+
+app.post('/addRoom',function(req,res){
+  var postBody = req.body;
+  room.createEntry(postBody, 'ktripath@ur.rochester.edu', function(data) {
+	console.log(data);  
+	res.json(data);
+  });
+});
 
 app.get('/confirm/',function(req, res){
   var token = req.query.token;

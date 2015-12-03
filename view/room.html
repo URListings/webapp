@@ -60,27 +60,45 @@
     <!-- Header -->
     <div class="intro-header">
     </div>
-	<div class="row">
-        <div class="col-lg-12">
-			<ul class="nav nav-tabs">
-				<li id="roomListing"><a href="#">Room Listings</a></li>
-				<li id="myListing"><a href="#">My Listing</a></li>
-			</ul>
-          </div>
-    </div>
 	<div class="container">
+		<div class="row col-lg-12" >
+			<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active"><a href="#listings" aria-controls="listings" role="tab" data-toggle="tab">Listings</a></li>
+				<li role="presentation"><a href="#myListings" aria-controls="myListings" role="tab" data-toggle="tab">My Posts</a></li>
+			</ul>
+		</div>
+		<div class="row col-lg-12 tab-content">
+				<div role="tabpanel" class="tab-pane active" id="listings">
+					<div class="row_data">
+						<span class="data-none">
+							No data to display
+						</span>
+					</div>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="myListings">
 					<div>
-						<button type="button" class="btn btn-success icon" data-toggle="modal" data-target="#new_entry"/>
+						<button type="button" class="btn btn-info icon" data-toggle="modal" data-target="#new_entry"/>
 							<span class="glyphicon glyphicon-plus"></span>
 						</button>
 					</div>
 					<div class="modal fade" id="new_entry" role="dialog">
 						<div class="modal-dialog">
 						<div class="modal-content split_container">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="glyphicon glyphicon-remove"></span></button>
+						</div>
+						<div class="modal-body">
 						<div class="new_address">
+							<div id="send_message" class="alert alert-danger">
+							</div>
 						<form class="form-horizontal popform" id = "form_rental">
 							<div class="form-group">
+								<input type="text" class="form-control" id="title" name = "title" maxlength="40" placeholder="Title">
+							</div>
+							<div class="form-group">
 								<input type="address" class="form-control" id="address" name = "address" placeholder="Address">
+								<input type="hidden" id="latlong" name = "latlong"/>
+								<input type="hidden" id="prop_id" name = "prop_id"/>
 							</div>
 							<div class="form-group">
 								<input type="text" class="form-control" id="rent" name = "rent" placeholder="Rent($$$)">
@@ -91,8 +109,15 @@
 							<div class="form-group">Amenities:</div>
 							<div class="form-group">
 								<input type="checkbox" value="Washer/Dryer" name="amenities"/><span>Washer/Dryer</span>
-								<input type="checkbox" value="Pots/Pans" name="amenities"/><span>Pots/Pans</span>
+								<input type="checkbox" value="Pots/Pans" name="amenities"/><span>Fridge, Microwave</span>
 								<input type="checkbox" value="Furnished" name="amenities"/><span>Furnished</span>
+							</div>
+							<div class="form-group">Rent includes:</div>
+							<div class="form-group">
+								<input type="checkbox" value="Electricity" name="rent_in"/><span>Electricity</span>
+								<input type="checkbox" value="Water" name="rent_in"/><span>Water</span>
+								<input type="checkbox" value="Gas" name="rent_in"/><span>Gas</span>
+								<input type="checkbox" value="Internet" name="rent_in"/><span>Internet</span>
 							</div>
 							<div class="form-group ">
 								<input type="button" class="btn btn-info" value="Submit" id="submit"/>
@@ -103,13 +128,49 @@
 						<div class="map" id="map"></div>
 						</div>
 						</div>
+						</div>
 					</div>
-					<div class="row_data">
-						<span class="data-none">
+					<div class="row_data" id="item_set">
+						<span class="data-none" id="empty_set">
 							No data to display
 						</span>
 					</div>
-    </div>
+					<div id="row_template">
+						<div class = "list_head">
+							<span class="list_title">$title</span>
+							<button type="button" class="btn btn-info list_icon" data-toggle="modal" data-target="#new_entry"/>
+								<span class="glyphicon glyphicon-pencil"></span>
+							</button>
+							<button type="button" class="list_icon btn btn-danger"/>
+								<span class="glyphicon glyphicon-remove"></span>
+							</button>
+						</div>
+						<div>
+							<span class="list_subtitle">Rent:</span>
+							<span class="rent">$rent</span>
+						</div>
+						<div>
+							<span class="list_subtitle">Address:</span>
+							<span class="list_feature">$address</span>
+						</div>
+						<div>
+							<span class="list_subtitle">Description:</span>
+							<span class="list_feature">$desc</span>
+						</div>
+						<div>
+							<span class="list_subtitle">Amenities:</span>
+							<span class="list_feature">$amenities</span>
+						</div>
+						<div>
+							<span class="list_subtitle">Rent includes:</span>
+							<span class="list_feature">$rentin</span>
+						</div>
+						<hr/>
+					</div>
+				</div>
+		</div>
+	</div>
+	
     <footer>
         <div class="container">
             <div class="row">
