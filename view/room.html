@@ -89,7 +89,7 @@
 						</div>
 						<div class="modal-body">
 						<div class="new_address">
-							<div id="send_message" class="alert alert-danger">
+							<div id="send_message" class="alert alert-danger hide">
 							</div>
 						<form class="form-horizontal popform" id = "form_rental">
 							<div class="form-group">
@@ -135,35 +135,35 @@
 							No data to display
 						</span>
 					</div>
-					<div id="row_template">
+					<div id="row_template" class="hide_field">
 						<div class = "list_head">
-							<span class="list_title">$title</span>
-							<button type="button" class="btn btn-info list_icon" data-toggle="modal" data-target="#new_entry"/>
+							<span class="list_title" id="title_">$title</span>
+							<button id="edit_" type="button" class="btn btn-info list_icon" data-toggle="modal" data-target="#new_entry"/>
 								<span class="glyphicon glyphicon-pencil"></span>
 							</button>
-							<button type="button" class="list_icon btn btn-danger"/>
+							<button type="button" class="list_icon btn btn-danger" id="delete_" data-target="delete"/>
 								<span class="glyphicon glyphicon-remove"></span>
 							</button>
 						</div>
 						<div>
-							<span class="list_subtitle">Rent:</span>
-							<span class="rent">$rent</span>
+							<span class="list_subtitle">Rent($):</span>
+							<span class="rent" id="rent_">$rent</span>
 						</div>
 						<div>
 							<span class="list_subtitle">Address:</span>
-							<span class="list_feature">$address</span>
+							<span class="list_feature" id="address_">$address</span>
 						</div>
 						<div>
 							<span class="list_subtitle">Description:</span>
-							<span class="list_feature">$desc</span>
+							<span class="list_feature" id="desc_">$desc</span>
 						</div>
 						<div>
 							<span class="list_subtitle">Amenities:</span>
-							<span class="list_feature">$amenities</span>
+							<span class="list_feature" id="amenities_">$amenities</span>
 						</div>
 						<div>
 							<span class="list_subtitle">Rent includes:</span>
-							<span class="list_feature">$rentin</span>
+							<span class="list_feature" id="rentin_">$rentin</span>
 						</div>
 						<hr/>
 					</div>

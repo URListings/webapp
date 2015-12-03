@@ -52,6 +52,12 @@ app.post('/addRoom',function(req,res){
   });
 });
 
+app.get('/userRooms',function(req,res){
+  room.getListings('ktripath@ur.rochester.edu', function(data) {
+	res.json(data);
+  });
+});
+
 app.get('/confirm/',function(req, res){
   var token = req.query.token;
   var email = req.query.email;

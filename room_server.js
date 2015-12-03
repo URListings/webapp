@@ -41,34 +41,27 @@ module.exports = {
     },
 
 
-    query : function(userData, callback){
-    	response = this.validate(userData);
-		if(response.valid) {
-			this.client.dbCall(function (result) {
-				var db = result.value;
-				var col = db.collection('user');
-				col.find({_id:userData._id, pass:userData.pass, authenticate:1}).toArray(function(err, info) {
-					if(err) {
-						response.message = 'please login';
-						response.valid = false;
-					} else if (info.length){
-                        response.valid = true;
-                        response.message = 'found';
-                        response._id = info[0]._id;
-                        response.fName = info[0].fName;
-                        response.lName = info[0].lName;
-                    } else {
-                        response.valid = false;
-                        response.message = 'not found';
-                    }
-                    
-					db.close();
-					callback(response);
-				});
+    getListings : function(user, callback){
+    	response = {};
+		response.data = [];
+		this.client.dbCall(function (result) {
+			var db = result.value;
+			var col = db.collection('rooms');
+			col.find({user:user}).toArray(function(err, info) {
+				if(err) {
+					response.message = 'please login';
+					response.valid = false;
+				} else {
+					for(i = 0, len = info.length; i < len; i++) {
+						console.log(info[i]);
+						info[i]._id = info[i]._id.$oid;
+					}
+					response.data = info;
+                }                   
+				db.close();
+				callback(response);
 			});
-		} else {
-			callback(response);
-		}
+		});	
     
     },
 

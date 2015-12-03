@@ -46,20 +46,23 @@ $(document).ready(function(){
 	function processJson(json, isNew) {
 		var outpuDiv;
 		var content = $("#row_template").html();
-		content = content.replace('$address', json.address);
-		content = content.replace('$rent', json.rent);
-		content = content.replace('$desc', json.description);
-		content = content.replace('$title', json.title);
-		content = content.replace('$rentin', getArrayString(json.rent_in));
-		content = content.replace('$address', getArrayString(json.amenities));
 		if(isNew) {
-			outpuDiv = $('<div id="'+ json.id +'_content">' + content + '</div>');
+			outpuDiv = $('<div id="'+ json._id +'_content">' + content + '</div>');
 			$("#item_set").prepend(outpuDiv);
 		} else {
-			outpuDiv = $('#' + json.id + '_content');
+			outpuDiv = $('#' + json._id + '_content');
 			outpuDiv.html(content);
 		}
-		outpuDiv.find('button[data-target="#new_entry"]').data("data", json);
+		outpuDiv.find('#address_').text(json.address).removeAttr("id");
+		outpuDiv.find('#rent_').text(json.rent).removeAttr("id");
+		outpuDiv.find('#desc_').text(json.description).removeAttr("id");
+		outpuDiv.find('#title_').text(json.title).removeAttr("id");
+		outpuDiv.find('#rentin_').text(getArrayString(json.rent_in)).removeAttr("id");amenities_
+		outpuDiv.find('#amenities_').text(getArrayString(json.amenities)).removeAttr("id");
+		var edit = outpuDiv.find('#edit_').removeAttr("id");
+		var del = outpuDiv.find('#delete_').removeAttr("id");
+		$.data(edit, "data", json);
+		$.data(del, "data", json.id);
 	}
 	
 	function getArrayString(arr) {
@@ -99,7 +102,8 @@ $(document).ready(function(){
 				data[name] = ser[i].value;
 			}
 		}
-		url = data.prop_id === '' || data.prop_id === undefined ? '/addRoom' : '/editRoom';
+		isNew = data.prop_id === '' || data.prop_id === undefined;
+		url = isNew ? '/addRoom' : '/editRoom';
 		$.ajax({
 			type:'POST',
 			url:url,
@@ -107,21 +111,29 @@ $(document).ready(function(){
 			data: data,
 			beforeSend: function() {
 			},
-			success: function(data ) {
-				if(data.valid) {
+			success: function(response) {
+				if(response.valid) {
 					$('#new_entry').modal('hide');
+					processJson(response.data, isNew);
 				} else {
-					$("#send_message").text(data.message).show();
+					$("#send_message").text(response.message).show();
 				}
-				console.log(data);
 			}
 		});
 	});
 	$('a[aria-controls="myListings"]').on('shown.bs.tab', function (e) {
-		
+		$.getJSON('userRooms').done(function(response) {
+			arr = response.data;
+			for(i = 0, len = arr.length; i < len; i++) {
+				processJson(arr[i], true);
+			}
+		});
 	});
 	$('button[data-target="#new_entry"]').on('show.bs.modal', function (e) {
-		console.log('dfsd');
+		console.log(this);
+	});
+	$('button[data-target="delete"]').on('click', function (e) {
+		console.log(this);
 	});
 });
 
