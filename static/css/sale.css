@@ -10,3 +10,38 @@
 .message{
 	display: none;
 }
+
+.title{
+	text-align: left;
+	font: 15px arial sans-serif;
+}
+
+.author{
+	text-align: center;
+	font: bold 15px arial sans-serif;
+}
+
+.time{
+	text-align: center;
+	font: 15px arial sans-serif;
+	color: gray;
+}
+
+table, th, td{
+	border: 1px solid silver;
+} 
+
+table {
+	width: 70%;
+	margin: auto;
+}
+
+th {
+	text-align: center;
+	font: bold 20px arial, sans-serif;
+	padding: 20px;
+}
+
+td {
+	padding: 10px;
+}

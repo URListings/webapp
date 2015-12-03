@@ -9,14 +9,26 @@ $(document).ready(function(){
             success: function(data){
                 if(data.valid){
                     var json = data.sale_info
+                    var table = $('#sale_table');
                     $.each(json, function(index, value){
-                        console.log(index + ': ' + value._title);
+                        var row = [value._title, value.fName, value.create_date];
+                        $('#sale_table').append(createRow(row));
                     });
-
-                    
                 }
             }
         });
+    }
+
+    function createRow(row){
+        var tr = document.createElement('tr');
+
+        $.each(row, function(index, value){
+            var td = document.createElement('td');
+            var text = document.createTextNode(value);
+            td.appendChild(text);
+            tr.appendChild(td);
+        });
+        return tr;
     }
 
     $("#postB").click(function(){
@@ -52,14 +64,13 @@ $(document).ready(function(){
                     if(data.valid){
                         
                     }
-                    
                 }
             });
         
 
-
-            $(".sale-info").fadeIn();
-            $(".post-form").hide();
+            location.reload();
+            //$(".sale-info").fadeIn();
+            //$(".post-form").hide();
         }
 
     })

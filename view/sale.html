@@ -75,15 +75,29 @@
     <div class='Content' style='text-align:center'>
 
        <div class='sale-info'>
-            <input id="postB" type='button' value='Post'>
+            <div>
+                <input id="postB" type='button' value='Post'>
+            </div>
+            <div>
+                <p>sales info</p>
+            </div>
+            <div>
+                <table id="sale_table">
+                    <tr><th colspan=3 id="table_title">Sales Information</th></tr>
+                    <tr>
+                        <td class="title" id="content_title">Title</td>
+                        <td class="author" id="author_name">Author</td>
+                        <td class="time" id="post_time">Time</td>
+                    </tr>
+                </table>
+            </div>
         </div>
-        <div class='post-form'>
-            <input id="back" type='button' value="Back To List">
-        </div>
+        
     
-   
+
 
         <div class='post-form'>
+            <input id="back" type='button' value="Back To List">
             <p>Post form</p>
             <form class='form-group'>
                 <div>
@@ -101,9 +115,7 @@
             </form>
         </div>
 
-        <div class='sale-info'>
-            <p>sales info</p>
-        </div>
+        
 
         <div>
             <label id='valid_message' class='message'>asdf</label>
