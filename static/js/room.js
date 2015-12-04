@@ -42,13 +42,12 @@ $(document).ready(function(){
 			map.setZoom(16);
 		});
 	}
-	
+	initMap();
 	function processJson(json, isNew) {
 		var outpuDiv;
 		var content = $("#row_template").html();
 		if(isNew) {
 			outpuDiv = $('<div id="'+ json._id +'_content">' + content + '</div>');
-			$("#item_set").prepend(outpuDiv);
 		} else {
 			outpuDiv = $('#' + json._id + '_content');
 			outpuDiv.html(content);
@@ -57,29 +56,44 @@ $(document).ready(function(){
 		outpuDiv.find('#rent_').text(json.rent).removeAttr("id");
 		outpuDiv.find('#desc_').text(json.description).removeAttr("id");
 		outpuDiv.find('#title_').text(json.title).removeAttr("id");
-		outpuDiv.find('#rentin_').text(getArrayString(json.rent_in)).removeAttr("id");amenities_
+		outpuDiv.find('#rentin_').text(getArrayString(json.rent_in)).removeAttr("id");
 		outpuDiv.find('#amenities_').text(getArrayString(json.amenities)).removeAttr("id");
 		var edit = outpuDiv.find('#edit_').removeAttr("id");
 		var del = outpuDiv.find('#delete_').removeAttr("id");
-		$.data(edit, "data", json);
-		$.data(del, "data", json.id);
+		edit.data("data", json);
+		del.data("data", json._id);
+		return outpuDiv;
 	}
-	
 	function getArrayString(arr) {
 		var out = '';
 		if(arr) {
-			for(i = 0, len = arr.length; i < len; i++) {
-				if(i + 1 == len) {
-					out += arr[i];
-				} else {
-					out = out + arr[i] + ', ';
-				}
-			}
+			out = arr.join(", ");
 		}
 		return out;
 	}
 	
-	initMap();
+	function getFormData(serializeArray) {
+		data = {};
+		listFields = {"amenities":true,"rent_in":true};
+		for(i = 0, len = ser.length; i < len; i++) {
+			name = ser[i].name;
+			if(data.name) {
+				data.name.push(ser[i].value);
+			} else {
+				if(listFields.name) {
+					data.name = [ser[i].value];
+					delete listFields[name];
+				} else {
+					data.name = ser[i].value;
+				}
+			}
+		}
+		for(key in listFields) {
+			data.key = [];
+		}
+		return data;
+	}
+	
 	$('#new_entry').on('shown.bs.modal', function (e) {
 		google.maps.event.trigger(map, "resize");
 		map.setCenter(map.getCenter());
@@ -90,22 +104,12 @@ $(document).ready(function(){
 	});
 	$("#submit").click(function() {
 		ser = $("#form_rental").serializeArray();
-		data = {};
-		for(i = 0, len = ser.length; i < len; i++) {
-			name = ser[i].name;
-			if(data[name] !== undefined) {
-				if(!data[name].push) {
-					data[name] = [data[name]];
-				} 
-				data[name].push(ser[i].value);
-			} else {
-				data[name] = ser[i].value;
-			}
-		}
+		data = getFormData(ser)
 		isNew = data.prop_id === '' || data.prop_id === undefined;
-		url = isNew ? '/addRoom' : '/editRoom';
+		url = isNew ? '/userRooms' : '/userRooms/' + data.prop_id;
+		requestType = isNew ? 'POST' : 'PUT';
 		$.ajax({
-			type:'POST',
+			type:requestType,
 			url:url,
 			dataType:'json',
 			data: data,
@@ -114,7 +118,8 @@ $(document).ready(function(){
 			success: function(response) {
 				if(response.valid) {
 					$('#new_entry').modal('hide');
-					processJson(response.data, isNew);
+					outputDiv = processJson(response.data, isNew);
+					$("#item_set").prepend(outputDiv);
 				} else {
 					$("#send_message").text(response.message).show();
 				}
@@ -122,18 +127,29 @@ $(document).ready(function(){
 		});
 	});
 	$('a[aria-controls="myListings"]').on('shown.bs.tab', function (e) {
-		$.getJSON('userRooms').done(function(response) {
-			arr = response.data;
-			for(i = 0, len = arr.length; i < len; i++) {
-				processJson(arr[i], true);
-			}
+		var itemDiv = $("#item_set");
+		if(!itemDiv.hasClass("loaded")) {
+			$.getJSON('userRooms').done(function(response) {
+				arr = response.data;
+				itemDiv.addClass("loaded");
+				for(i = 0, len = arr.length; i < len; i++) {
+					outputDiv = processJson(arr[i], true);
+					$("#item_set").append(outputDiv);
+				}
+				if(arr.length == 0) {
+					$("#empty_set").show();
+				}
+			});
+		}
+	});
+	$('#item_set').on('click', 'button.edit', function (e) {
+		console.log($.data(this, "data"));
+	});
+	$('#item_set').on('click', 'button.delete', function (e) {
+		var id = $.data(this, "data");
+		$.get("/remove/" + id).done(function() {
+			
 		});
-	});
-	$('button[data-target="#new_entry"]').on('show.bs.modal', function (e) {
-		console.log(this);
-	});
-	$('button[data-target="delete"]').on('click', function (e) {
-		console.log(this);
 	});
 });
 

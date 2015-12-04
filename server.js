@@ -44,7 +44,7 @@ app.get('/room',function(req,res){
   res.sendFile(__dirname + '/view/room.html');
 });
 
-app.post('/addRoom',function(req,res){
+app.post('/userRooms',function(req,res){
   var postBody = req.body;
   room.createEntry(postBody, 'ktripath@ur.rochester.edu', function(data) {
 	console.log(data);  
@@ -53,6 +53,18 @@ app.post('/addRoom',function(req,res){
 });
 
 app.get('/userRooms',function(req,res){
+  room.getListings('ktripath@ur.rochester.edu', function(data) {
+	res.json(data);
+  });
+});
+
+app.delete('/userRooms/*',function(req,res){
+  room.getListings('ktripath@ur.rochester.edu', function(data) {
+	res.json(data);
+  });
+});
+
+app.put('/userRooms',function(req,res){
   room.getListings('ktripath@ur.rochester.edu', function(data) {
 	res.json(data);
   });
@@ -96,6 +108,17 @@ app.post('/postSale/', function(req, res){
     res.json(data);
   });
 });
+
+
+
+
+app.get('/sale/post/:tagId', function(req, res) {
+  res.send("tagId is set to " + req.params.tagId);
+});
+
+
+
+
 
 app.post('/query/', function(req, res){
     var post_body = req.body;

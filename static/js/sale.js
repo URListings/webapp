@@ -9,14 +9,40 @@ $(document).ready(function(){
             success: function(data){
                 if(data.valid){
                     var json = data.sale_info
+                    var table = $('#sale_table');
                     $.each(json, function(index, value){
-                        console.log(index + ': ' + value._title);
+                        $('#sale_table').append(createRow(value));
                     });
-
-                    
                 }
             }
         });
+    }
+
+    function createRow(row){
+        var tr = document.createElement('tr');
+
+        var td1 = document.createElement('td');
+        var a1 = document.createElement('a');
+        var text1 = document.createTextNode(row._title);
+        a1.appendChild(text1);
+        a1.href="/sale/post/" + row._id;
+        a1.id = row._id;
+        td1.appendChild(a1);
+        tr.appendChild(td1);
+
+        var td2 = document.createElement('td');
+        var a2 = document.createElement('a');
+        var text2 = document.createTextNode(row.fName+' '+row.lName);
+        a2.appendChild(text2);
+        td2.appendChild(a2);
+        tr.appendChild(td2);
+
+        var td3 = document.createElement('td');
+        var text3 = document.createTextNode(row.create_date);
+        td3.appendChild(text3);
+        tr.appendChild(td3);
+        
+        return tr;
     }
 
     $("#postB").click(function(){
@@ -52,14 +78,13 @@ $(document).ready(function(){
                     if(data.valid){
                         
                     }
-                    
                 }
             });
         
 
-
-            $(".sale-info").fadeIn();
-            $(".post-form").hide();
+            location.reload();
+            //$(".sale-info").fadeIn();
+            //$(".post-form").hide();
         }
 
     })

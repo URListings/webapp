@@ -89,7 +89,7 @@
 						</div>
 						<div class="modal-body">
 						<div class="new_address">
-							<div id="send_message" class="alert alert-danger hide">
+							<div id="send_message" class="alert alert-danger hide_field">
 							</div>
 						<form class="form-horizontal popform" id = "form_rental">
 							<div class="form-group">
@@ -109,7 +109,8 @@
 							<div class="form-group">Amenities:</div>
 							<div class="form-group">
 								<input type="checkbox" value="Washer/Dryer" name="amenities"/><span>Washer/Dryer</span>
-								<input type="checkbox" value="Pots/Pans" name="amenities"/><span>Fridge, Microwave</span>
+								<input type="checkbox" value="Fridge" name="amenities"/><span>Fridge</span>
+								<input type="checkbox" value="Microwave" name="amenities"/><span>Microwave</span>
 								<input type="checkbox" value="Furnished" name="amenities"/><span>Furnished</span>
 							</div>
 							<div class="form-group">Rent includes:</div>
@@ -130,18 +131,19 @@
 						</div>
 						</div>
 					</div>
-					<div class="row_data" id="item_set">
-						<span class="data-none" id="empty_set">
+					<div class="row_data">
+						<div id="item_set"></div>
+						<span class="data-none hide_field" id="empty_set">
 							No data to display
 						</span>
 					</div>
-					<div id="row_template" class="hide_field">
+					<div id="row_template" class="hide">
 						<div class = "list_head">
 							<span class="list_title" id="title_">$title</span>
-							<button id="edit_" type="button" class="btn btn-info list_icon" data-toggle="modal" data-target="#new_entry"/>
+							<button id="edit_" type="button" class="btn btn-info list_icon edit"/>
 								<span class="glyphicon glyphicon-pencil"></span>
 							</button>
-							<button type="button" class="list_icon btn btn-danger" id="delete_" data-target="delete"/>
+							<button type="button" class="list_icon btn btn-danger delete" id="delete_"/>
 								<span class="glyphicon glyphicon-remove"></span>
 							</button>
 						</div>

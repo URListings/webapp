@@ -1,23 +1,19 @@
 module.exports = {
 	client : require('./data'),
-	authenticate : function (userData, callback) {
-		response = this.validate(userData);
-		if(response.valid) {
-			this.client.dbCall(function (result) {
-				var db = result.value;
-				var col = db.collection('user');
-				col.find({_id:userData._id, pass:userData.pass, authenticate:1}).count(function(err, count) {
-					if(count == 0) {
-						response.message = 'Invalid user id or password';
-						response.valid = false;
-					}                   
-					db.close();
-					callback(response);
-				});
+	deleteListing : function (user, listingId, callback) {
+		response = {};
+		this.client.dbCall(function (result) {
+			var db = result.value;
+			var col = db.collection('user');
+			col.deleteOne({_id:listingId}, function(err, result) {
+				if(err || result.deletedCount == 0) {
+					response.message = 'Error in deleting file';
+					response.valid = false;
+				}                   
+				db.close();
+				callback(response);
 			});
-		} else {
-			callback(response);
-		}
+		});
 	},
 
 
@@ -52,10 +48,6 @@ module.exports = {
 					response.message = 'please login';
 					response.valid = false;
 				} else {
-					for(i = 0, len = info.length; i < len; i++) {
-						console.log(info[i]);
-						info[i]._id = info[i]._id.$oid;
-					}
 					response.data = info;
                 }                   
 				db.close();
