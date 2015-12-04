@@ -22,23 +22,32 @@ module.exports = {
 	},
 
 
-    edit : function(userData, callback){
-        response = {valid:false};
-        this.client.dbCall(function(result){
-            var db = result.value;
-            var col = db.collection('user');
-            col.updateOne({_id:userData._id, pass:userData.pass, authenticate:1}, { $set:{fName:userData.fName, lName:userData.lName}}, function(err, info){
-                if(err){
-                    response.valid = false;
-                } else {
-                    response.valid = true;
-                    response.fName = userData.fName;
-                    response.lName = userData.lName;
-                }
-                db.close();
-                callback(response);
-            });
-        });
+    updateListings : function(user, data, callback){
+		response = this.validate(data);
+		if(response.valid) {
+			data.user = user;
+			ObjectId = this.client.mongoId;
+			var oid = new ObjectId(data._id);
+			this.client.dbCall(function (result) {
+				var db = result.value;
+				var col = db.collection('rooms');
+				col.updateOne({_id:oid, user:user}, {$set:{title:data.title, address:data.address, latlong:data.latlong, rent:data.rent
+				, description:data.description, amenities:data.amenities, rent_in:data.rent_in, modified_date: new Date()}}, 
+					function(err, numRows){
+						if(err || numRows === 0){
+							response.valid = false;
+							response.message('Error in updating the lisitng')
+						} else {
+							response.valid = true;
+							response.data = data;
+						}
+						db.close();
+						callback(response);
+				});		
+			});
+		} else {
+			callback(response);
+		}
     },
 
 
@@ -78,6 +87,7 @@ module.exports = {
 					} else {
 						roomData.create_date = new Date();
 						roomData.modified_date = new Date();
+						delete roomData._id;
 						col.insert(roomData, function(err, data) {
 							if(err) {
 								response.valid = false;

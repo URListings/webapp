@@ -104,12 +104,19 @@ $(document).ready(function(){
 		$("#rent").val(json.rent);
 		$("#description").val(json.description);
 		$("#id").val(json._id);
+		setFormMultiple(json.amenities);
+		setFormMultiple(json.rent_in);
 		var latLng = new google.maps.LatLng(Number(coord[0]), Number(coord[1]));
 		var marker = new google.maps.Marker({position: latLng, map: map});
 		map.setCenter(latLng);
-		//bounds.extend(latLng);
 		map.fitBounds(new google.maps.LatLngBounds(latLng, latLng));
 		map.setZoom(16);
+	}
+	
+	function setFormMultiple(arr) {
+		for(var i =0, len = arr.length;i < len;i++) {
+			$('#chk_' + arr[i]).attr("checked", "checked");
+		}
 	}
 	
 	$('#new_entry').on('shown.bs.modal', function (e) {

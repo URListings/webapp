@@ -67,9 +67,7 @@ app.delete('/userRooms/*',function(req,res){
 app.put('/userRooms/*',function(req,res){
   var id = req.params[0];
   var postBody = req.body;
-  console.log(postBody);
-  console.log(id);
-  room.updateListings('ktripath@ur.rochester.edu', function(data) {
+  room.updateListings('ktripath@ur.rochester.edu', postBody, function(data) {
 	res.json(data);
   });
 });
