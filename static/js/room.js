@@ -77,21 +77,39 @@ $(document).ready(function(){
 		listFields = {"amenities":true,"rent_in":true};
 		for(i = 0, len = ser.length; i < len; i++) {
 			name = ser[i].name;
-			if(data.name) {
-				data.name.push(ser[i].value);
+			if(data[name] && data[name].push) {
+				data[name].push(ser[i].value);
 			} else {
-				if(listFields.name) {
-					data.name = [ser[i].value];
+				if(listFields[name]) {
+					data[name] = [ser[i].value];
 					delete listFields[name];
 				} else {
-					data.name = ser[i].value;
+					data[name] = ser[i].value;
 				}
 			}
 		}
 		for(key in listFields) {
-			data.key = [];
+			data[key] = [];
 		}
 		return data;
+	}
+	
+	function setFormFields(json) {
+		var form = $("#form_rental");
+		var coord = json.latlong.split(",");
+		$("#prop_id").val(json._id);
+		$("#title").val(json.title);
+		$("#latlong").val(json.latlong);
+		$("#address").val(json.address);
+		$("#rent").val(json.rent);
+		$("#description").val(json.description);
+		$("#id").val(json._id);
+		var latLng = new google.maps.LatLng(Number(coord[0]), Number(coord[1]));
+		var marker = new google.maps.Marker({position: latLng, map: map});
+		map.setCenter(latLng);
+		//bounds.extend(latLng);
+		map.fitBounds(new google.maps.LatLngBounds(latLng, latLng));
+		map.setZoom(16);
 	}
 	
 	$('#new_entry').on('shown.bs.modal', function (e) {
@@ -105,16 +123,14 @@ $(document).ready(function(){
 	$("#submit").click(function() {
 		ser = $("#form_rental").serializeArray();
 		data = getFormData(ser)
-		isNew = data.prop_id === '' || data.prop_id === undefined;
-		url = isNew ? '/userRooms' : '/userRooms/' + data.prop_id;
+		isNew = data._id === '' || data._id === undefined;
+		url = isNew ? '/userRooms' : '/userRooms/' + data._id;
 		requestType = isNew ? 'POST' : 'PUT';
 		$.ajax({
 			type:requestType,
 			url:url,
 			dataType:'json',
 			data: data,
-			beforeSend: function() {
-			},
 			success: function(response) {
 				if(response.valid) {
 					$('#new_entry').modal('hide');
@@ -143,12 +159,23 @@ $(document).ready(function(){
 		}
 	});
 	$('#item_set').on('click', 'button.edit', function (e) {
-		console.log($.data(this, "data"));
+		setFormFields($.data(this, "data"));
+		$('#new_entry').modal('show');
 	});
 	$('#item_set').on('click', 'button.delete', function (e) {
 		var id = $.data(this, "data");
-		$.get("/remove/" + id).done(function() {
-			
+		$.ajax({
+			type:'DELETE',
+			url:'/userRooms/' + id,
+			dataType:'json',
+			success: function(response) {
+				if(response.valid) {
+					$("#" + id + "_content").remove();
+					if($("#item_set").is(":empty")) {
+						$("#empty_set").show();
+					}
+				}
+			}
 		});
 	});
 });

@@ -46,8 +46,7 @@ app.get('/room',function(req,res){
 
 app.post('/userRooms',function(req,res){
   var postBody = req.body;
-  room.createEntry(postBody, 'ktripath@ur.rochester.edu', function(data) {
-	console.log(data);  
+  room.createEntry(postBody, 'ktripath@ur.rochester.edu', function(data) { 
 	res.json(data);
   });
 });
@@ -59,13 +58,18 @@ app.get('/userRooms',function(req,res){
 });
 
 app.delete('/userRooms/*',function(req,res){
-  room.getListings('ktripath@ur.rochester.edu', function(data) {
+  id = req.params[0];
+  room.deleteListing('ktripath@ur.rochester.edu', id, function(data) {
 	res.json(data);
   });
 });
 
-app.put('/userRooms',function(req,res){
-  room.getListings('ktripath@ur.rochester.edu', function(data) {
+app.put('/userRooms/*',function(req,res){
+  var id = req.params[0];
+  var postBody = req.body;
+  console.log(postBody);
+  console.log(id);
+  room.updateListings('ktripath@ur.rochester.edu', function(data) {
 	res.json(data);
   });
 });
@@ -109,16 +113,9 @@ app.post('/postSale/', function(req, res){
   });
 });
 
-
-
-
 app.get('/sale/post/:tagId', function(req, res) {
   res.send("tagId is set to " + req.params.tagId);
 });
-
-
-
-
 
 app.post('/query/', function(req, res){
     var post_body = req.body;

@@ -2,14 +2,19 @@ module.exports = {
 	client : require('./data'),
 	deleteListing : function (user, listingId, callback) {
 		response = {};
+		ObjectId = this.client.mongoId;
+		var oid = new ObjectId(listingId);
 		this.client.dbCall(function (result) {
 			var db = result.value;
-			var col = db.collection('user');
-			col.deleteOne({_id:listingId}, function(err, result) {
+			var col = db.collection('rooms');
+			col.deleteOne({_id:oid}, function(err, result) {
 				if(err || result.deletedCount == 0) {
-					response.message = 'Error in deleting file';
+					response.message = 'Error in deleting listing';
 					response.valid = false;
-				}                   
+				} else {
+					response.message = 'Listing removed successfully';
+					response.valid = true;
+				}                 
 				db.close();
 				callback(response);
 			});
@@ -45,7 +50,7 @@ module.exports = {
 			var col = db.collection('rooms');
 			col.find({user:user}).toArray(function(err, info) {
 				if(err) {
-					response.message = 'please login';
+					response.message = '';
 					response.valid = false;
 				} else {
 					response.data = info;
