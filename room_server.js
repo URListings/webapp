@@ -22,12 +22,12 @@ module.exports = {
 	},
 
 
-    updateListings : function(user, data, callback){
+    updateListings : function(id, user, data, callback){
 		response = this.validate(data);
 		if(response.valid) {
 			data.user = user;
 			ObjectId = this.client.mongoId;
-			var oid = new ObjectId(data._id);
+			var oid = new ObjectId(id);
 			this.client.dbCall(function (result) {
 				var db = result.value;
 				var col = db.collection('rooms');
@@ -40,6 +40,7 @@ module.exports = {
 						} else {
 							response.valid = true;
 							response.data = data;
+							response.message = 'Listing updated successfully'
 						}
 						db.close();
 						callback(response);

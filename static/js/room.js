@@ -1,5 +1,6 @@
 $(document).ready(function(){
 	var map;
+	var markers = [];
    function initMap() {
 		map = new google.maps.Map(document.getElementById('map'), {
 			center: {lat: 43.1551, lng: -77.5992},
@@ -11,7 +12,7 @@ $(document).ready(function(){
 		map.addListener('bounds_changed', function() {
 			autocomplete.setBounds(map.getBounds());
 		});
-		var markers = [];
+		markers = [];
 		autocomplete.addListener('place_changed', function() {
 			var place = autocomplete.getPlace();
 			if (place === undefined || place == null) {
@@ -29,10 +30,11 @@ $(document).ready(function(){
 				anchor: new google.maps.Point(17, 34),
 				scaledSize: new google.maps.Size(25, 25)
 			};
-			marker = new google.maps.Marker({map: map, icon: icon, title: place.name, 
+			marker = new google.maps.Marker({icon: icon, title: place.name, 
 						position: place.geometry.location});
 			$("#latlong").val(marker.position.lat() + ','+marker.position.lng());
 			markers.push(marker);
+			setMarkersMap(map);
 			if (place.geometry.viewport) {
 				bounds.union(place.geometry.viewport);
 			} else {
@@ -42,7 +44,13 @@ $(document).ready(function(){
 			map.setZoom(16);
 		});
 	}
-	initMap();
+	
+	function setMarkersMap(map) {
+		for(var i = 0, len = markers.length; i < len; i++) {
+			markers[i].setMap(map);
+		}
+	}
+	
 	function processJson(json, isNew) {
 		var outpuDiv;
 		var content = $("#row_template").html();
@@ -72,6 +80,15 @@ $(document).ready(function(){
 		return out;
 	}
 	
+	function getUser() {
+		id = Cookies.get('loginId');
+		if(id) {
+			return id;
+		} else {
+			return '';
+		}
+	}
+	
 	function getFormData(serializeArray) {
 		data = {};
 		listFields = {"amenities":true,"rent_in":true};
@@ -91,6 +108,7 @@ $(document).ready(function(){
 		for(key in listFields) {
 			data[key] = [];
 		}
+		data.user = getUser() ;
 		return data;
 	}
 	
@@ -107,7 +125,9 @@ $(document).ready(function(){
 		setFormMultiple(json.amenities);
 		setFormMultiple(json.rent_in);
 		var latLng = new google.maps.LatLng(Number(coord[0]), Number(coord[1]));
-		var marker = new google.maps.Marker({position: latLng, map: map});
+		var marker = new google.maps.Marker({position: latLng});
+		markers.push(marker)
+		setMarkersMap(map);
 		map.setCenter(latLng);
 		map.fitBounds(new google.maps.LatLngBounds(latLng, latLng));
 		map.setZoom(16);
@@ -115,10 +135,10 @@ $(document).ready(function(){
 	
 	function setFormMultiple(arr) {
 		for(var i =0, len = arr.length;i < len;i++) {
-			$('#chk_' + arr[i]).attr("checked", "checked");
+			$('#chk_' + arr[i]).prop("checked", true);
 		}
 	}
-	
+	initMap();
 	$('#new_entry').on('shown.bs.modal', function (e) {
 		google.maps.event.trigger(map, "resize");
 		map.setCenter(map.getCenter());
@@ -126,6 +146,10 @@ $(document).ready(function(){
 	}).on('hidden.bs.modal', function (e) {
 		$("#send_message").text('');
 		$('#form_rental')[0].reset();
+		$('#form_rental input[type="text"], #form_rental input[type="hidden"]').val('');
+		$('#form_rental input[type="checkbox"]').prop('checked', false);
+		setMarkersMap(null);
+		markers = [];
 	});
 	$("#submit").click(function() {
 		ser = $("#form_rental").serializeArray();
@@ -142,6 +166,7 @@ $(document).ready(function(){
 				if(response.valid) {
 					$('#new_entry').modal('hide');
 					outputDiv = processJson(response.data, isNew);
+					BootstrapDialog.alert(response.message);
 					$("#item_set").prepend(outputDiv);
 				} else {
 					$("#send_message").text(response.message).show();
@@ -152,7 +177,9 @@ $(document).ready(function(){
 	$('a[aria-controls="myListings"]').on('shown.bs.tab', function (e) {
 		var itemDiv = $("#item_set");
 		if(!itemDiv.hasClass("loaded")) {
-			$.getJSON('userRooms').done(function(response) {
+			$.getJSON('userRooms', 
+				{user:getUser()}
+			).done(function(response) {
 				arr = response.data;
 				itemDiv.addClass("loaded");
 				for(i = 0, len = arr.length; i < len; i++) {
@@ -179,6 +206,7 @@ $(document).ready(function(){
 					$.ajax({
 						type:'DELETE',
 						url:'/userRooms/' + id,
+						data:{user:getUser()},
 						dataType:'json',
 						success: function(response) {
 							if(response.valid) {
@@ -186,8 +214,11 @@ $(document).ready(function(){
 								if($("#item_set").is(":empty")) {
 									$("#empty_set").show();
 								}
-								BootstrapDialog.alert(response.message);
 							}
+							BootstrapDialog.alert(response.message);
+						},
+						error: function(req, status) {
+							BootstrapDialog.alert('There was an error in the operation');
 						}
 					});
 				}
