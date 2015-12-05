@@ -50,7 +50,6 @@ module.exports = {
 		}
     },
 
-
     getListings : function(user, callback){
     	response = {};
 		response.data = [];

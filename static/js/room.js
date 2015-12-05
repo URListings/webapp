@@ -171,16 +171,25 @@ $(document).ready(function(){
 	});
 	$('#item_set').on('click', 'button.delete', function (e) {
 		var id = $.data(this, "data");
-		$.ajax({
-			type:'DELETE',
-			url:'/userRooms/' + id,
-			dataType:'json',
-			success: function(response) {
-				if(response.valid) {
-					$("#" + id + "_content").remove();
-					if($("#item_set").is(":empty")) {
-						$("#empty_set").show();
-					}
+		BootstrapDialog.confirm({
+			title:"Confirm",
+			message:"Are you sure you want to delete?",
+			callback:function(result) {
+				if(result) {
+					$.ajax({
+						type:'DELETE',
+						url:'/userRooms/' + id,
+						dataType:'json',
+						success: function(response) {
+							if(response.valid) {
+								$("#" + id + "_content").remove();
+								if($("#item_set").is(":empty")) {
+									$("#empty_set").show();
+								}
+								BootstrapDialog.alert(response.message);
+							}
+						}
+					});
 				}
 			}
 		});
