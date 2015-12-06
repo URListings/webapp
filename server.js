@@ -3,6 +3,7 @@ var app = express();
 var bodyParser = require('body-parser');
 var login = require('./login');
 var room = require('./room_server');
+var sale = require('./sale_server');
 var smtpTransport = login.getSMTPTransport(require('nodemailer'));
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); 
@@ -101,7 +102,7 @@ app.get('/sale/', function(req, res){
 });
 
 app.get('/getSale/', function(req, res){
-  login.getSale(res, function(data){
+  sale.getSale(res, function(data){
     if(data.valid){
 
     }
@@ -111,7 +112,7 @@ app.get('/getSale/', function(req, res){
 
 app.post('/postSale/', function(req, res){
   var post_body = req.body;
-  login.postSale(post_body, function(data){
+  sale.postSale(post_body, function(data){
     if(data.valid){
 
     }

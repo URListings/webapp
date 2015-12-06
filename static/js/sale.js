@@ -48,12 +48,10 @@ $(document).ready(function(){
     $("#postB").click(function(){
         $('#valid_message').hide();
         $(".post-form").fadeIn();
-        $(".sale-info").hide();
     })
 
     $("#back").click(function(){
         $('#valid_message').hide();
-        $(".sale-info").fadeIn();
         $(".post-form").hide();
     })
 
