@@ -48,7 +48,6 @@ app.get('/room',function(req,res){
 app.post('/userRooms',function(req,res){
   var postBody = req.body;
   var user = postBody.user;
-  console.log(user);
   room.createEntry(postBody, user, function(data) { 
 	res.json(data);
   });
@@ -56,16 +55,21 @@ app.post('/userRooms',function(req,res){
 
 app.get('/userRooms',function(req,res){
   var user = req.query.user;
-  console.log(user);  
-  room.getListings(user, function(data) {
-	res.json(data);
-  });
+  var type = req.query.type;
+  if(type === 'other') {
+	room.getOtherListings(user, function(data) {
+		res.json(data);
+	}); 
+  } else {
+	room.getUserListings(user, function(data) {
+		res.json(data);
+	});  
+  }
 });
 
 app.delete('/userRooms/*',function(req,res){
   id = req.params[0];
-  var user = req.query.user;
-  console.log(user);
+  var user = req.headers['user'];
   room.deleteListing(user, id, function(data) {
 	res.json(data);
   });
@@ -75,7 +79,6 @@ app.put('/userRooms/*',function(req,res){
   var id = req.params[0];
   var postBody = req.body;
   var user = postBody.user;
-  console.log(user);
   room.updateListings(id, user, postBody, function(data) {
 	res.json(data);
   });

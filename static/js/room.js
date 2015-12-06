@@ -1,8 +1,13 @@
 $(document).ready(function(){
-	var map;
+	var map, listMap;
 	var markers = [];
    function initMap() {
 		map = new google.maps.Map(document.getElementById('map'), {
+			center: {lat: 43.1551, lng: -77.5992},
+			zoom: 13,
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		});
+		listMap = new google.maps.Map(document.getElementById('listMap'), {
 			center: {lat: 43.1551, lng: -77.5992},
 			zoom: 13,
 			mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -23,14 +28,7 @@ $(document).ready(function(){
 			});
 			markers = [];
 			var bounds = new google.maps.LatLngBounds();
-			var icon = {
-				url: place.icon,
-				size: new google.maps.Size(71, 71),
-				origin: new google.maps.Point(0, 0),
-				anchor: new google.maps.Point(17, 34),
-				scaledSize: new google.maps.Size(25, 25)
-			};
-			marker = new google.maps.Marker({icon: icon, title: place.name, 
+			marker = new google.maps.Marker({title: place.name, 
 						position: place.geometry.location});
 			$("#latlong").val(marker.position.lat() + ','+marker.position.lng());
 			markers.push(marker);
@@ -49,6 +47,10 @@ $(document).ready(function(){
 		for(var i = 0, len = markers.length; i < len; i++) {
 			markers[i].setMap(map);
 		}
+	}
+	
+	function errorDialog(res, message) {
+		BootstrapDialog.alert('There was an internal error in the operation');
 	}
 	
 	function processJson(json, isNew) {
@@ -72,6 +74,23 @@ $(document).ready(function(){
 		del.data("data", json._id);
 		return outpuDiv;
 	}
+	
+	function processListJson(json) {
+		var content = $("#listing_template").html();
+		var outpuDiv = $('<div>' + content + '</div>');
+		outpuDiv.find('#lrent_').text(json.rent).removeAttr("id");
+		outpuDiv.find('#laddress_').text(json.address).removeAttr("id");
+		outpuDiv.find('#ldesc_').text(json.description).removeAttr("id");
+		outpuDiv.find('#ltitle_').text(json.title).removeAttr("id");
+		outpuDiv.find('#lcontact_').text(json.user).removeAttr("id");
+		outpuDiv.find('#lrentin_').text(getArrayString(json.rent_in)).removeAttr("id");
+		outpuDiv.find('#lamenities_').text(getArrayString(json.amenities)).removeAttr("id");
+		outpuDiv.find('#lmail_').text(json.user).removeAttr("id");
+		var loc = outpuDiv.find('#llocation_').removeAttr("id");
+		loc.data("data", json.latlong);
+		return outpuDiv;
+	}
+	
 	function getArrayString(arr) {
 		var out = '';
 		if(arr) {
@@ -112,6 +131,16 @@ $(document).ready(function(){
 		return data;
 	}
 	
+	function zoomLocation(map, lat, lng) {
+		var latLng = new google.maps.LatLng(Number(lat), Number(lng));
+		var marker = new google.maps.Marker({position: latLng});
+		markers.push(marker)
+		setMarkersMap(map);
+		map.setCenter(latLng);
+		map.fitBounds(new google.maps.LatLngBounds(latLng, latLng));
+		map.setZoom(16);
+	}
+	
 	function setFormFields(json) {
 		var form = $("#form_rental");
 		var coord = json.latlong.split(",");
@@ -124,13 +153,7 @@ $(document).ready(function(){
 		$("#id").val(json._id);
 		setFormMultiple(json.amenities);
 		setFormMultiple(json.rent_in);
-		var latLng = new google.maps.LatLng(Number(coord[0]), Number(coord[1]));
-		var marker = new google.maps.Marker({position: latLng});
-		markers.push(marker)
-		setMarkersMap(map);
-		map.setCenter(latLng);
-		map.fitBounds(new google.maps.LatLngBounds(latLng, latLng));
-		map.setZoom(16);
+		zoomLocation(map, coord[0], coord[1]);
 	}
 	
 	function setFormMultiple(arr) {
@@ -138,16 +161,37 @@ $(document).ready(function(){
 			$('#chk_' + arr[i]).prop("checked", true);
 		}
 	}
-	initMap();
+	function fetchListings() {
+		$.getJSON('userRooms', 
+			{user:getUser(),
+			 type:'other'})
+		.done(function(response) {
+			arr = response.data;
+			for(i = 0, len = arr.length; i < len; i++) {
+				outputDiv = processListJson(arr[i]);
+				$("#item_list").append(outputDiv);
+			}
+			if(arr.length == 0) {
+				$("#empty_list").show();
+			}
+		}).
+		fail(errorDialog);
+	}
 	$('#new_entry').on('shown.bs.modal', function (e) {
 		google.maps.event.trigger(map, "resize");
 		map.setCenter(map.getCenter());
-		$('#send_message').hide();
 	}).on('hidden.bs.modal', function (e) {
-		$("#send_message").text('');
+		$("#send_message").text('').hide();
 		$('#form_rental')[0].reset();
 		$('#form_rental input[type="text"], #form_rental input[type="hidden"]').val('');
 		$('#form_rental input[type="checkbox"]').prop('checked', false);
+		setMarkersMap(null);
+		markers = [];
+	});
+	$('#list_dialog').on('shown.bs.modal', function (e) {
+		google.maps.event.trigger(listMap, "resize");
+		listMap.setCenter(listMap.getCenter());
+	}).on('hidden.bs.modal', function (e) {
 		setMarkersMap(null);
 		markers = [];
 	});
@@ -167,7 +211,9 @@ $(document).ready(function(){
 					$('#new_entry').modal('hide');
 					outputDiv = processJson(response.data, isNew);
 					BootstrapDialog.alert(response.message);
-					$("#item_set").prepend(outputDiv);
+					if(isNew) {
+						$("#item_set").prepend(outputDiv);
+					}
 				} else {
 					$("#send_message").text(response.message).show();
 				}
@@ -189,12 +235,18 @@ $(document).ready(function(){
 				if(arr.length == 0) {
 					$("#empty_set").show();
 				}
-			});
+			}).fail(errorDialog);
 		}
 	});
 	$('#item_set').on('click', 'button.edit', function (e) {
-		setFormFields($.data(this, "data"));
 		$('#new_entry').modal('show');
+		setFormFields($.data(this, "data"));
+	});
+	$('#item_list').on('click', 'button.location', function (e) {
+		$('#list_dialog').modal('show');
+		var latlng = $.data(this, "data");
+		latlng = latlng.split(",");
+		zoomLocation(listMap, latlng[0], latlng[1]);
 	});
 	$('#item_set').on('click', 'button.delete', function (e) {
 		var id = $.data(this, "data");
@@ -206,7 +258,7 @@ $(document).ready(function(){
 					$.ajax({
 						type:'DELETE',
 						url:'/userRooms/' + id,
-						data:{user:getUser()},
+						headers:{user:getUser()},
 						dataType:'json',
 						success: function(response) {
 							if(response.valid) {
@@ -217,13 +269,13 @@ $(document).ready(function(){
 							}
 							BootstrapDialog.alert(response.message);
 						},
-						error: function(req, status) {
-							BootstrapDialog.alert('There was an error in the operation');
-						}
+						error: errorDialog
 					});
 				}
 			}
 		});
 	});
+	fetchListings();
+	initMap();
 });
 
