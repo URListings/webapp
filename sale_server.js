@@ -6,7 +6,7 @@ module.exports = {
     	this.client.dbCall(function (result){
     		var db = result.value;
     		var col = db.collection('sale');
-    		col.find({authenticate:1}).toArray(function(err, data) {
+    		col.find({authenticate:1}).sort({modified_date:1}).toArray(function(err, data) {
     			if(err){
     				response.message = 'no post information';
     			}
@@ -54,7 +54,6 @@ module.exports = {
     },
 
     updateSale : function(userData, callback) {
-    	console.log(userData);
     	var response = {valid:false};
     	ObjectId = this.client.mongoId;
     	var oid = new ObjectId(userData._id);
@@ -71,7 +70,6 @@ module.exports = {
                     response.valid = true;
                     response.modified_date = modified_date;
                     response.message = 'Sale post updated successfully';
-                    console.log('end');
                 }
                 db.close();
                 callback(response);
@@ -136,7 +134,9 @@ module.exports = {
 							response.message = 'Post failed.';
 						}
 						else {
-							response.modified_date = userData.modified_date;
+							var json = data.ops[0];
+							response.modified_date = json.modified_date;
+							response._id = json._id;
 							response.valid = true;
 							response.message = 'Post successed.';
 						}

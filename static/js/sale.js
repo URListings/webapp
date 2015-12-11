@@ -52,21 +52,20 @@ $(document).ready(function(){
 
     function createRow(row){
         var tr = document.createElement('tr');
+        //tr.setAttribute('id', row._id + '_tr');
+        tr.id = row._id + '_list';
 
         var td1 = document.createElement('td');
         var a1 = document.createElement('a');
         var text1 = document.createTextNode(row._title);
         a1.appendChild(text1);
-        a1.href="/sale/post/" + row._id;
         a1.id = row._id;
         td1.appendChild(a1);
         tr.appendChild(td1);
 
         var td2 = document.createElement('td');
-        var a2 = document.createElement('a');
         var text2 = document.createTextNode(row.fName+' '+row.lName);
-        a2.appendChild(text2);
-        td2.appendChild(a2);
+        td2.appendChild(text2);
         tr.appendChild(td2);
 
         var td3 = document.createElement('td');
@@ -78,21 +77,17 @@ $(document).ready(function(){
     }
 
     function createUserRow(row){
-        console.log("create user row");
+        console.log(row);
         var tr = document.createElement('tr');
-        tr.setAttribute('id', row._id + 'tr');
+        //tr.setAttribute('id', row._id + 'tr');
+        tr.id = row._id + '_user';
 
         var td1 = document.createElement('td');
         var a1 = document.createElement('a');
-        //var a1 = $('<button class="user_post" ' + 'id="' + row._id + '">' + '</button>');
         var text1 = document.createTextNode(row._title);
         a1.appendChild(text1);
-        //$(text1).appendTo(a1);
-        //a1.href="/sale/post/" + row._id;
         a1.id = row._id;
-        //a1.attr(class,'user_post');
         td1.appendChild(a1);
-        //$(a1).appendTo(td1);
         tr.appendChild(td1);
 
         var td2 = document.createElement('td');
@@ -132,6 +127,20 @@ $(document).ready(function(){
         });
     }
 
+    function contentShow(id){
+        reqJson = {_id:id};
+        $.ajax({
+            type:'POST',
+            url:'/saleContent/',
+            dataType:'json',
+            data:reqJson,
+            beforeSend: function(){},
+            success: function(data){
+                $("#contentTitle").text(data._title);
+                $("#contentText").text(data._content);
+            }
+        });
+    }
     
 
     $('a[aria-controls="listings"]').on('shown.bs.tab', function (e) {
@@ -149,6 +158,12 @@ $(document).ready(function(){
         setEditForm(id);
     })
 
+    $("#sale_table").on("click", 'a', function(e){
+        var id = $(this).attr("id");
+        console.log(id);
+        $('#contentModal').modal('show');
+        contentShow(id);
+    })
     
     $("#user_table").on("click", 'button', function(e){
         var id = $(this).attr("id");
@@ -166,7 +181,7 @@ $(document).ready(function(){
                         data: reqJson,
                         success: function(response) {
                             if(response.valid) {
-                                $('#' + id + 'tr').remove();
+                                $('#' + id + '_user').remove();
                             }
                             BootstrapDialog.alert(response.message);
                         },
@@ -181,8 +196,8 @@ $(document).ready(function(){
         console.log("submit click");
         var id = Cookies.get('loginId');
         var password = Cookies.get('password');
-        var fName = Cookies.get('fName');
-        var lName = Cookies.get('lName');
+        //var fName = Cookies.get('fName');
+        //var lName = Cookies.get('lName');
         var title = $('#post_title').val();
         var content = $('#post_content').val();
         var reqJson = {_id:id, pass:password, _title:title, _content:content};
@@ -197,8 +212,11 @@ $(document).ready(function(){
                     $('#saleModal').modal('hide');
                     if(data.valid){
                         reqJson.modified_date = data.modified_date;
+                        reqJson._id = data._id;
                         $('#user_table').prepend(createUserRow(reqJson));
                     }
+                    $('#post_title').val('');
+                    $('#post_content').val('');
                     BootstrapDialog.alert(data.message);
                 }
             });
@@ -221,7 +239,7 @@ $(document).ready(function(){
                     $('#saleModal2').modal('hide');
                     if(data.valid){
                         reqJson.modified_date = data.modified_date;
-                        $('#' + id + 'tr').remove();
+                        $('#' + id + '_user').remove();
                         $('#user_table').prepend(createUserRow(reqJson));
                     }
                     BootstrapDialog.alert(data.message);
