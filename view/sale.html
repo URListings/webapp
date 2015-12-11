@@ -89,13 +89,21 @@
 
             <div role="tabpanel" class="tab-pane fade" id="myListings">
                 <div>
-                    <button type="button" class="btn btn-info icon" data-toggle="modal" data-target="#new_entry"/>
+                    <button type="button" class="btn btn-info icon" data-toggle="modal" data-target="#saleModal" id="test_button"/>
                         <span class="glyphicon glyphicon-plus"></span>
                     </button>
+                </div>
+                <div class="user_data">
+                    <h4>My Posts</h4>
+                    <table id="user_table" class="table">
+                        
+                    </table>
+                </div>
+
+                    <!--
                     <div>
                          <input id="postB" type='button' value='Post'>
                     </div>
-
                     <div class='post-form'>
 
                         <input id="back" type='button' value="Back To List">
@@ -111,13 +119,73 @@
                                 </textarea>
                             </div>
                             <div>
-                                <input type='button' class='post-info' id='submit' value='Submit'>
+                                <input type='button' class='post-info' id='submit1' value='Submit'>
                             </div>
                         </form>
                     </div>
+                    -->
 
+            </div>
+        </div>
+
+        <!-- Modal Dialog -->        
+        <!-- new dialog -->
+        <div class="modal fade bootstrap-dialog type-primary" id="saleModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="glyphicon glyphicon-remove"></span></button>
+                        <h4 class="modal-title" id="myModalLabel">New</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form role='form'>
+                            <div class="form-group">
+                                <p>Title:</p>
+                                <input type='text' class='post-info' id='post_title' placeholder='title'>
+                            </div>
+                            <div class="form-group">
+                                <p>Content:</p>
+                                <textarea rows="5" cols="50" class='post-info' id='post_content'>
+                                </textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="submit">Submit</button>
+                    </div>
                 </div>
             </div>
+        </div>
+
+        <!-- edit dialog -->
+        <div class="modal fade bootstrap-dialog type-primary" id="saleModal2" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="glyphicon glyphicon-remove"></span></button>
+                        <h4 class="modal-title" id="myModalLabel">Edit</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form role='form'>
+                            <div class="form-group">
+                                <p>Title:</p>
+                                <input type='text' class='post-info' id='edit_title' placeholder='title'>
+                            </div>
+                            <div class="form-group">
+                                <p>Content:</p>
+                                <textarea rows="5" cols="50" class='post-info' id='edit_content'>
+                                </textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="edit_submit">Submit</button>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         
@@ -153,6 +221,7 @@
 
     <script src="js/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-dialog.min.js"></script>
     <script src="js/js.cookie.js"></script>
     <script src="js/sale.js"></script>
     <script src="js/cookie.js"></script>

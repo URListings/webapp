@@ -104,8 +104,8 @@ app.get('/sale/', function(req, res){
   res.sendFile(__dirname + '/view/sale.html');
 });
 
-app.get('/getSale/', function(req, res){
-  sale.getSale(res, function(data){
+app.get('/saleInfo/', function(req, res){
+  sale.getSale(req, function(data){
     if(data.valid){
 
     }
@@ -113,9 +113,35 @@ app.get('/getSale/', function(req, res){
   })
 });
 
-app.post('/postSale/', function(req, res){
+app.delete('/saleInfo/*',function(req,res){
   var post_body = req.body;
-  sale.postSale(post_body, function(data){
+  sale.deleteSale(post_body, function(data) {
+  res.json(data);
+  });
+});
+
+app.post('/saleInfo/', function(req, res){
+  var post_body = req.body;
+      console.log(post_body);
+
+  sale.updateSale(post_body, function(data){
+    res.json(data);
+  });
+});
+
+app.post('/saleContent/', function(req, res){
+  var post_body = req.body;
+  sale.getSaleContent(post_body, function(data){
+    if(data.valid){
+
+    }
+    res.json(data);
+  });    
+});
+
+app.put('/saleInfo/', function(req, res){
+  var post_body = req.body;
+  sale.createSale(post_body, function(data){
     if(data.valid){
 
     }
@@ -123,7 +149,7 @@ app.post('/postSale/', function(req, res){
   });
 });
 
-app.get('/sale/post/:tagId', function(req, res) {
+app.get('/sale/post1/:tagId', function(req, res) {
   res.send("tagId is set to " + req.params.tagId);
 });
 
